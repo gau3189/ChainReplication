@@ -1,0 +1,1 @@
+public enum Outcome  { Processed, InconsistentWithHistory, InsufficientFunds }
