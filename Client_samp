@@ -1,0 +1,215 @@
+import java.io.*;
+import java.net.*;
+ 
+public class CClient {
+    
+    private int my_tcp_portNo;
+    
+
+    public static void main(String[] args) throws IOException {
+         
+        if (args.length != 2) {
+            System.err.println(
+                "Usage: java EchoClient <host name> <port number>");
+            System.exit(1);
+        }
+        String hostName = args[0];
+        
+        int portNumber = Integer.parseInt(args[1]);
+        DatagramSocket socket = new DatagramSocket();
+ 
+        CClient client = new CClient();
+            // send request
+        InetAddress temp_ip = InetAddress.getLocalHost();
+        String temp_hostname = temp_ip.getHostName();
+        System.out.println("Your current IP address : " + temp_ip.getHostAddress());
+        System.out.println("Your current Hostname : " + temp_hostname);
+        
+
+       try 
+         {
+            BufferedReader stdIn =
+                new BufferedReader(new InputStreamReader(System.in));
+           
+            String fromUser = "";
+ 
+            while (true) {
+
+                System.out.println("Choose the operation to be performed");
+                System.out.println("[1] Deposit");
+                System.out.println("[2] Withdrawl");
+                System.out.println("[3] CheckBalace");
+
+                int ch = Integer.parseInt(stdIn.readLine());
+
+                switch(ch)
+                {
+                    case 1: fromUser = client.getDepositDetails();
+                            break;
+
+                    case 2: fromUser = client.getWithdrawDetails();
+                            break;
+
+                    case 3: fromUser = client.getCheckBalaceDetails();
+                            break;
+
+                    default: System.out.println("Choose one of the above option");
+                }
+                
+                //fromUser = stdIn.readLine();
+                if (fromUser.equals("Bye."))
+                    break;
+                else {
+                    byte[] buf = new byte[256];
+                    buf = fromUser.getBytes();
+                    InetAddress address = InetAddress.getByName(args[0]);
+                    DatagramPacket packet = new DatagramPacket(buf, buf.length, address, portNumber);
+                    socket.send(packet);
+                 
+                        // get response
+
+                    packet = new DatagramPacket(buf, buf.length);
+                    socket.receive(packet);
+             
+                    // display response
+                    String received = new String(packet.getData(), 0, packet.getLength());
+                    
+                    System.out.println("Server: " + received);
+                     
+                    System.out.println("Client: " + fromUser);
+                }
+            }
+        } catch (UnknownHostException e) {
+            System.err.println("Don't know about host " + hostName);
+            System.exit(1);
+        } catch (IOException e) {
+            System.err.println("Couldn't get I/O for the connection to " +
+                hostName);
+            System.exit(1);
+        }
+
+                socket.close();
+    }
+
+    /* Intialization Function*/
+    public void int init()
+    {
+        /*
+            1. Read Configuration File and get the port number where to run 
+            2. Master IP address and port No
+
+        */
+        String temp = "";
+        Path path = Paths.get("Bank1.Config");
+        
+        //my_udp_portNo = 4444;
+        //my_tcp_portNo = 5554;
+        succ_tcp_portNo= 5555;
+        try
+        {
+            InetAddress temp_ip = InetAddress.getLocalHost();
+            String temp_hostname = temp_ip.getHostName();
+            System.out.println("Your current IP address : " + temp_ip.getHostAddress());
+            System.out.println("Your current Hostname : " + temp_hostname);
+
+            myadrress = InetAddress.getLocalHost().getHostAddress();
+            hostName = InetAddress.getLocalHost().getHostName();
+
+            BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
+            String line = "", tcp_temp="", udp_temp = "";
+            int count = 0;
+
+            while ((line = reader.readLine()) != null ) {
+                if(!line.isEmpty()) 
+                {
+                    if (count == 4)
+                        break;
+
+                    String []val = line.split(" :");
+                    if (val.length == 2)
+                    {
+                        if (val[0].trim().equals("MASTER_IP_ADDRESS"))
+                        {
+                           masterAddress = val[1];
+                           count++;
+                        }
+                        if (val[0].trim().equals("MASTER_TCP_PORTNO"))
+                        {
+                            master_tcp_portNo = Integer.parseInt(val[1].trim());
+                            count++;
+                        }
+                        if (val[1].trim().equals(myadrress))
+                        {
+                            tcp_temp = "TCP_PORT_NUMBER_" + val[0].trim().split("_")[2];
+                            udp_temp = "UDP_PORT_NUMBER_" + val[0].trim().split("_")[2];
+                        }
+
+                        if (val[0].trim().equals(tcp_temp))
+                        {
+                            
+                            my_tcp_portNo = Integer.parseInt(val[1].trim());
+                             try 
+                            {
+                                ServerSocket serverSocket = new ServerSocket(my_tcp_portNo);
+                                serverSocket.close();
+                            }
+                            catch(Exception e)
+                            {
+                                continue;
+                            }
+                            count++;
+                        }
+
+                        if (val[0].trim().equals(udp_temp))
+                        {
+                            if(count != 3)
+                                continue;
+                            else
+                            {
+                                my_udp_portNo = Integer.parseInt(val[1].trim());
+                                count++;
+                            }
+                        }   
+                    } 
+                }    
+            }
+            System.out.println("tcp_temp = "+ tcp_temp);
+
+            System.out.println("udp_temp = "+ udp_temp);
+
+            System.out.println("my_tcp_portNo = "+ my_tcp_portNo);
+
+            System.out.println("my_udp_portNo = "+ my_udp_portNo);
+
+            System.out.println("masterAddress = "+ masterAddress);
+
+            System.out.println("master_tcp_portNo = "+ master_tcp_portNo);
+        
+        }
+        catch(Exception e)
+        {
+            System.out.println("Exception = " + e);
+        }
+        
+        return 1;
+    }
+
+
+    public  String getDepositDetails()
+    {
+        // generate requeset in the form bankname.clientNumber.sequenceNumber
+        //return "DP,reqID,accoutNumber,amount"
+        return "DP,reqId,1000";
+    }
+
+    public  String getWithdrawDetails()
+    {
+        return "WD,reqId,500";   
+    }
+
+    public  String getCheckBalaceDetails()
+    {
+        return "CB,reqId,ac12345";
+    }
+
+}
