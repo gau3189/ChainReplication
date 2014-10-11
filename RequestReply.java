@@ -5,7 +5,8 @@ public class RequestReply implements Serializable {
     private static final long serialVersionUID = 5950169519310163456L;
     											 
     private String reqID;
-	
+	private String bankName;
+
     private String operation;
 	private String accountNumber;
 	
@@ -13,12 +14,20 @@ public class RequestReply implements Serializable {
 	private float amount;
 	private Outcome outcome;
     
-    public String getReqId() {
+    public String getReqID() {
         return reqID;
     }
 
-    public void setReqId(String id) {
+    public void setReqID(String id) {
     	   this.reqID = id;
+    }
+
+	public String getBankName() {
+        return bankName;
+    }
+
+    public void setBankName(String bankName) {
+    	   this.bankName = bankName;
     }
 
     public String getAccountNumber() {

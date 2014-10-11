@@ -85,20 +85,12 @@ public class CClientThread extends Thread {
             socket = new DatagramSocket();
             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
            
-            String fromUser = null;
+            RequestReply sendRequest = null;
             int mCount = 0;
             
             while (true) {
 
-                /*  
-                    System.out.println("Choose the operation to be performed for client = " + id);
-                    System.out.println("[1] Deposit");
-                    System.out.println("[2] Withdrawl");
-                    System.out.println("[3] CheckBalace");
-                */
                     mCount = this.gbMessage + this.dpMessage +this.wdMessage;
-                    //System.out.println("mCount = " + mCount+ "for id="+this.id );
-                    //Random rand = new Random();
                     int ch = getRandomChoice();
                     int sendPortNo = 0;
                     // System.out.println("choice for id="+this.id + "\t choice = " + ch);
@@ -112,27 +104,34 @@ public class CClientThread extends Thread {
                     }   
                     switch(ch)
                     {
-                        case 1: fromUser = getDepositDetails();
+                        case 1: sendRequest = getDepositDetails();
                                 sendPortNo = headPortNo;
                                 break;
 
-                        case 2: fromUser = getWithdrawDetails();
+                        case 2: sendRequest = getWithdrawDetails();
                                 sendPortNo = headPortNo;
                                 break;
 
-                        case 3: fromUser = getCheckBalaceDetails();
+                        case 3: sendRequest = getCheckBalaceDetails();
                                 sendPortNo = tailPortNo;
                                 break;
 
                         default: break;
                     }
                 
-                    if (fromUser.equals("nop"))
+                    if (sendRequest == null)
                             continue;
 
                     byte[] buf = new byte[256];
                     byte[] rbuf = new byte[5000];
-                    buf = fromUser.getBytes();
+                    
+                    ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+                    ObjectOutput oo = new ObjectOutputStream(bStream); 
+                    oo.writeObject(sendRequest);
+                    oo.close();
+
+                    buf = bStream.toByteArray();
+
                     InetAddress address = InetAddress.getByName(hostName);
                     DatagramPacket packet = new DatagramPacket(buf, buf.length, address, sendPortNo);
                     socket.send(packet);
@@ -183,12 +182,14 @@ public class CClientThread extends Thread {
         return 0;
     }
 
-    public  String getDepositDetails()
+    public RequestReply getDepositDetails()
     {
-        String message = null;
+        RequestReply message = new RequestReply();
+        String id = null;
+        
         dpMessage--;
         if (dpMessage < 0)
-                return "nop";
+                return null;
 
         // if (dpMessage < 2)
         //  {  
@@ -213,20 +214,28 @@ public class CClientThread extends Thread {
             System.out.println("ID : " +id+"ReqId= "+reqID);
             System.out.println("ID : " +id+"amount= "+amount);
 
+            id =  this.bankName + "." + this.id + "." + reqID ;
+
+            message.setReqID(id);
+            message.setBankName(this.bankName);
+            message.setOperation("DP");
+            message.setAccountNumber(String.valueOf(this.accountNumber));
+            message.setAmount(amount);
             
-            message = "DP" + ";" + this.bankName + "." + this.id + "." + reqID + ";"  + this.accountNumber + ";" + amount;
-            testReq = message;
+            //message = "DP" + ";" + this.bankName + "." + this.id + "." + reqID + ";"  + this.accountNumber + ";" + amount;
+            //testReq = message;
         }
 
         return message;
     }
 
-    public  String getWithdrawDetails()
+    public  RequestReply getWithdrawDetails()
     {
-        String message = null;
+        RequestReply message = new RequestReply();
+        String id = null;
         wdMessage--;
         if (wdMessage < 0)
-               return "nop";
+               return null;
         else
         {
             /*generate deposit req*/
@@ -239,17 +248,26 @@ public class CClientThread extends Thread {
             System.out.println("ID : " +id+"ReqId = "+reqID);
             System.out.println("ID : " +id+"amount= "+amount);
 
-            message = "WD" + ";" + this.bankName + "." + this.id + "." + reqID + ";"  + this.accountNumber + ";" + amount;
+            id =  this.bankName + "." + this.id + "." + reqID ;
+
+            message.setReqID(id);
+            message.setBankName(this.bankName);
+            message.setOperation("WD");
+            message.setAccountNumber(String.valueOf(this.accountNumber));
+            message.setAmount(amount);
+
+            //message = "WD" + ";" + this.bankName + "." + this.id + "." + reqID + ";"  + this.accountNumber + ";" + amount;
         }
         return message;   
     }
 
-    public  String getCheckBalaceDetails()
+    public RequestReply getCheckBalaceDetails()
     {
-        String message = null;
+        RequestReply message = new RequestReply();
+        String id = null;
         gbMessage--;
         if (gbMessage < 0)
-                return "nop";
+                return null;
         else
         {
             /*generate deposit req*/
@@ -258,7 +276,13 @@ public class CClientThread extends Thread {
             int reqID = randSeq.nextInt(seed);
             System.out.println("ID : " +id+"reqID= "+reqID);
 
-            message = "GB" + ";" + this.bankName + "." + this.id + "." + reqID + ";"  + this.accountNumber;
+            id =  this.bankName + "." + this.id + "." + reqID ;
+
+            message.setReqID(id);
+            message.setOperation("GB");
+            message.setAccountNumber(String.valueOf(this.accountNumber));
+            message.setBankName(this.bankName);
+            //message = "GB" + ";" + this.bankName + "." + this.id + "." + reqID + ";"  + this.accountNumber;
         }    
         return message;
     }

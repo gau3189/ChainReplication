@@ -37,11 +37,19 @@ public class CRMClientServerThread extends Thread {
                 // receive request
                 DatagramPacket packet = new DatagramPacket(buf, buf.length);
                 socket.receive(packet);
- 
-                String rMessage = new String(buf);
-                System.out.println("Recieved = \n" + rMessage);
+            
+                int byteCount = packet.getLength();
+                ByteArrayInputStream byteStream = new ByteArrayInputStream(buf);
+                
+                System.out.println(byteStream );
+                ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(byteStream));
+                RequestReply clientMessage = (RequestReply) is.readObject();
+                
+                is.close();
 
-                receivedMessage = update(rMessage);
+                System.out.println("Recieved = \n" + clientMessage);
+
+                receivedMessage = update(clientMessage);
 
                 receivedMessage.setPortNumber(packet.getPort());
                 receivedMessage.setHostAddress(packet.getAddress().getHostAddress());
@@ -64,7 +72,7 @@ public class CRMClientServerThread extends Thread {
                 }
                 else
                 {
-                    response.setReqId(receivedMessage.reqID);
+                    response.setReqID(receivedMessage.reqID);
                     response.setBalance(receivedMessage.balance);
                     response.setOutcome(receivedMessage.outcome);
                     response.setOperation(receivedMessage.operation);
@@ -87,39 +95,38 @@ public class CRMClientServerThread extends Thread {
                 }   
             }
         }
-        catch (IOException e) {
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public ServerMessage update(String message)
+    public ServerMessage update(RequestReply message)
     {
        // GB;CITI.0.0;11897;
         System.out.println("Update");
         String reply = null;
-        String []retval = message.split(";");
+        //String []retval = message.split(";");
 
         ServerMessage receivedMessage = new ServerMessage();
                 
 
-        switch(retval[0])
+        switch(message.getOperation())
         {
-            case "GB":  receivedMessage = getBalance(retval[1], retval[2]);
+            case "GB":  receivedMessage = getBalance(message);
                         break;
-            case "DP":  //reply = deposit(retval[1], retval[2], Float.parseFloat(retval[3]));
-                        receivedMessage = deposit(retval[1], retval[2], Float.parseFloat(retval[3]));
+            case "DP":  receivedMessage = deposit(message);
                         break;
-            case "WD":  receivedMessage = withdraw(retval[1], retval[2], Float.parseFloat(retval[3]));
+            case "WD":  receivedMessage = withdraw(message);
                         break;
             default:    break;
         }
         return receivedMessage;
     }
 
-    public ServerMessage getBalance(String reqID, String accountNumber)
+    public ServerMessage getBalance(RequestReply message)
     {
         String reply = null;
-        
+        String accountNumber = message.getAccountNumber();
         //String []val = reqID.split(".");
         //if (!val[0].equals(this.bankName))
         //    return "invalidRequest";
@@ -127,7 +134,7 @@ public class CRMClientServerThread extends Thread {
         Account currAccount = null;
         ServerMessage receivedMessage = new ServerMessage();
 
-        receivedMessage.setReqID(reqID);
+        receivedMessage.setReqID(message.getReqID());
         receivedMessage.setAccountNumber(accountNumber);
         receivedMessage.setOperation("GB");
 
@@ -152,11 +159,15 @@ public class CRMClientServerThread extends Thread {
 
     }
 
-    public ServerMessage deposit(String reqID, String accountNumber, float amount)
+    public ServerMessage deposit(RequestReply message)
     {
         //String []val = reqID.split(".");
         // if (!val[0].equals(this.bankName))
         //     return "invalidRequest";
+
+        String accountNumber = message.getAccountNumber();
+        String reqID = message.getReqID();
+        float amount = message.getAmount();
 
         Account currAccount = null;
         ServerMessage receivedMessage = new ServerMessage();
@@ -227,8 +238,12 @@ public class CRMClientServerThread extends Thread {
         return receivedMessage;
     }
 
-    public ServerMessage withdraw(String reqID, String accountNumber, float amount)
+    public ServerMessage withdraw(RequestReply message)
     {
+        String accountNumber = message.getAccountNumber();
+        String reqID = message.getReqID();
+        float amount = message.getAmount();
+
         Account currAccount = null;
         ServerMessage receivedMessage = new ServerMessage();
 

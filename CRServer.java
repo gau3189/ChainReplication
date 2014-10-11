@@ -122,7 +122,7 @@ public class CRServer {
                     else
                     {
                         System.out.println("Sending client = "+ receivedMessage);
-                        response.setReqId(receivedMessage.getReqID());
+                        response.setReqID(receivedMessage.getReqID());
                         response.setBalance(receivedMessage.getBalance());
                         response.setOutcome(receivedMessage.getOutcome());
                         response.setOperation(receivedMessage.getOperation());
@@ -343,9 +343,10 @@ public class CRServer {
             
             System.out.println("Account List = "+currAccount);
             currAccount.balance = message.getAmount();
-            currAccount.processedTrans.add(trans);
+            if (message.getOutcome().equals(Outcome.Processed))
+                currAccount.processedTrans.add(trans);
 
-            reply = "<"+ message.getReqID() + "," + "Processed, " + currAccount.balance + ">";
+            reply = "<"+ message.getReqID() + "," + message.getOutcome() + currAccount.balance + ">";
             
 
         } else {
@@ -372,9 +373,10 @@ public class CRServer {
             
             System.out.println("Account List = "+currAccount.balance);
             currAccount.balance = message.getAmount();
-            currAccount.processedTrans.add(trans);
+            if (message.getOutcome().equals(Outcome.Processed))
+                currAccount.processedTrans.add(trans);
 
-            reply = "<"+ message.getReqID() + "," + "Processed, " + currAccount.balance + ">";
+            reply = "<"+ message.getReqID() + "," + message.getOutcome() + currAccount.balance + ">";
             
 
         } else {
