@@ -4,6 +4,12 @@ import java.util.*;
 import java.io.*;
 import java.net.*;
 import java.util.*;
+
+import java.util.logging.Logger;
+import java.util.logging.Level;
+import java.util.logging.FileHandler;
+import java.util.logging.SimpleFormatter;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -32,7 +38,9 @@ public class CRServer {
         private  String configFile;
 
         private Map<String,Account> accountList;
-        
+
+        private final static Logger LOGGER = Logger.getLogger(CRServer.class.getName());
+        private static FileHandler fh;
         public CRServer(String configFile, String bankname)
         {
             this.configFile = configFile;
@@ -40,6 +48,7 @@ public class CRServer {
 
             this.accountList = new HashMap<String,Account>();                    
         }
+
         public static void main(String[] args) throws IOException {
          
         if (args.length != 2) {
@@ -51,6 +60,24 @@ public class CRServer {
         
         int result = server.init();
 
+        fh = new FileHandler("./Logs/server@"+ server.tcpPortNo + ".log",true);  
+        LOGGER.addHandler(fh);
+        LOGGER.setUseParentHandlers(false);
+        LOGGER.setLevel(Level.FINE);
+        SimpleFormatter formatter = new SimpleFormatter();  
+        fh.setFormatter(formatter);  
+        LOGGER.info("################################ < Intial Configuration > ###############################");
+
+        LOGGER.config("master addr = "+ server.masterAddress);
+        LOGGER.config("master port = "+ server.masterPortNo);
+        LOGGER.config("My address = "+ server.myAddress);
+        LOGGER.config("successor port = "+ server.succPortNo);
+        LOGGER.config("server Count = "+ server.chainLength);  
+        LOGGER.config("server udpPortNo  = "+ server.udpPortNo);
+        LOGGER.config("server tcpPortNo  = "+ server.tcpPortNo);
+
+        LOGGER.info("################################ </ Intial Configuration >###############################");
+        /*
         System.out.println("master addr = "+ server.masterAddress);
         System.out.println("master port = "+ server.masterPortNo);
         System.out.println("My address = "+ server.myAddress);
@@ -58,7 +85,8 @@ public class CRServer {
         System.out.println("server Count = "+ server.chainLength);  
         System.out.println("server udpPortNo  = "+ server.udpPortNo);
         System.out.println("server tcpPortNo  = "+ server.tcpPortNo);
-        
+        */
+
         String inputLine, outputLine;
         DatagramSocket clientSocket = null;
         ServerMessage receivedMessage = null;
@@ -71,19 +99,18 @@ public class CRServer {
         try 
         { 
                 clientSocket = new DatagramSocket(server.udpPortNo);
-                new CRMClientServerThread(clientSocket, server.hostName, server.succPortNo, server.accountList).start();
+                new CRMClientServerThread(clientSocket, server.hostName, server.succPortNo, server.accountList, LOGGER).start();
         } 
         catch (Exception e) 
         {
             System.err.println("Could not listen on port " + server.udpPortNo);
+            LOGGER.severe("Could not listen on port " + server.udpPortNo);
             System.exit(-1);
         }
 
         Socket skt = null;
-        //PrintWriter out = null;
         ObjectOutputStream out = null;
-        
-               
+             
         try (
                 ServerSocket serverSocket = new ServerSocket(server.tcpPortNo);
                 Socket sSocket = serverSocket.accept();
@@ -96,13 +123,14 @@ public class CRServer {
             )
             { 
                 System.out.println("Created TCP port for lsitening peer server port no="+ server.tcpPortNo);
-
+                LOGGER.fine("Created TCP port for lsitening peer server port no="+ server.tcpPortNo);
                 int reply = 0;
                 while ((receivedMessage = (ServerMessage) inStream.readObject()) != null)
                 {
                     byte[] buf = new byte[256];
                     System.out.println("input Line="+ receivedMessage);
-
+                    
+                    LOGGER.fine("received from predecessor ="+ receivedMessage);
                     reply = server.update(receivedMessage);
 
                     if (reply == 0)
@@ -111,21 +139,26 @@ public class CRServer {
                     if(server.succPortNo!=0 && skt == null)
                     {
                         System.out.println("Socket creation");
+                        LOGGER.fine("Socket creation");
                         skt = new Socket(server.hostName, server.succPortNo);
                         out = new ObjectOutputStream(skt.getOutputStream());
                     }
                     if( server.succPortNo!=0 && out != null)
                     {
                         System.out.println("Sending to other server" + receivedMessage);
+                        LOGGER.fine("Sending to successor server" + receivedMessage + "at port" + server.succPortNo);
                         out.writeObject(receivedMessage);
                     }
                     else
                     {
                         System.out.println("Sending client = "+ receivedMessage);
+                        LOGGER.fine("Sending client = "+ receivedMessage);
+
                         response.setReqID(receivedMessage.getReqID());
                         response.setBalance(receivedMessage.getBalance());
                         response.setOutcome(receivedMessage.getOutcome());
                         response.setOperation(receivedMessage.getOperation());
+                        response.setAccountNumber(receivedMessage.getAccountNumber());
 
                         ByteArrayOutputStream bStream = new ByteArrayOutputStream();
                         ObjectOutput oo = new ObjectOutputStream(bStream); 
@@ -140,46 +173,21 @@ public class CRServer {
                         clientSocket.send(packet);
                     }
                 }
-                /*while ((inputLine = temp_in.readLine()) != null)
-                {
-                    System.out.println("input Line="+ inputLine);
-
-                    reply = server.update(inputLine);
-
-                    if(server.succPortNo!=0 && skt == null)
-                    {
-                        System.out.println("Socket creation");
-                        skt = new Socket(server.hostName, server.succPortNo);
-                        out = new PrintWriter(skt.getOutputStream(), true);
-                    }
-                    if( server.succPortNo!=0 && out != null)
-                    {
-                        System.out.println("Sending to other server" + inputLine);
-                        out.println(inputLine);
-                    }
-                    else
-                    {
-                        System.out.println("Sending client = "+ inputLine);
-                        String []retval = inputLine.split(":");
-                    
-                        buf = retval[0].getBytes();
-                        System.out.println(buf.length);
-                        InetAddress address =  InetAddress.getByName(retval[1]);
-                        int port = Integer.parseInt(retval[2]);
-                        DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
-                        clientSocket.send(packet);
-                    }
-                }*/
 
                 System.out.println("Closing");
+                LOGGER.info("Server Shutting Down");
+
                 if(skt != null)
                     skt.close();
-                sSocket.close();
+                if(sSocket != null)
+                    sSocket.close();
 
             } 
             catch (Exception e) 
             {
                 System.err.println("Could not listen on port " + server.tcpPortNo);
+                LOGGER.severe("Exception Occured " + e);
+                
                 System.exit(-1);
             }
 
@@ -187,22 +195,22 @@ public class CRServer {
         
     }
 
-    /* Intialization Function*/
+    /*
+        Function        :  init
+        Description     :  1. Read Configuration File and get the port number where to run 
+                           2. Master IP address and port No
+                           3. Get all server related information such as delay time, server messages etc.
+
+    */
     public int init()
     {   
-        /*
-            1. Read Configuration File and get the port number where to run 
-            2. Master IP address and port No
-
-        */
+        
         String temp = null;
         Boolean isCorrectBank = false;
         Path path = Paths.get(configFile);
         
         try
         {
-           
-
             myAddress = InetAddress.getLocalHost().getHostAddress();
             hostName = InetAddress.getLocalHost().getHostName();
 
@@ -241,7 +249,7 @@ public class CRServer {
                             count++;
                         }
 
-                        if (val[0].trim().equals("LENGTH"))
+                        if (isCorrectBank && val[0].trim().equals("LENGTH"))
                         {
                             chainLength = Integer.parseInt(val[1].trim());
                             count++;
@@ -253,12 +261,12 @@ public class CRServer {
                             count++;
                         }
 
-                        if (tcpPortNo == 0 && val[1].trim().equals(myAddress))
+                        if (isCorrectBank && tcpPortNo == 0 && val[1].trim().equals(myAddress))
                         {
                             temp_num = Integer.parseInt(val[0].trim().split("_")[2]);
                         }
 
-                        if (val[0].trim().equals(tcp_temp+temp_num))
+                        if (isCorrectBank && val[0].trim().equals(tcp_temp+temp_num))
                         {
                             
                             tcpPortNo = Integer.parseInt(val[1].trim());
@@ -279,13 +287,13 @@ public class CRServer {
                             count++;
                         }
 
-                        if (tcpPortNo!=0 && val[0].trim().equals(udp_temp+temp_num))
+                        if (isCorrectBank && tcpPortNo!=0 && val[0].trim().equals(udp_temp+temp_num))
                         {
                                 udpPortNo = Integer.parseInt(val[1].trim());
                                 count++;
                         }
 
-                        if (tcpPortNo!=0  && val[0].trim().equals(tcp_temp+temp_succ))
+                        if (isCorrectBank && tcpPortNo!=0  && val[0].trim().equals(tcp_temp+temp_succ))
                         {
                                 succPortNo = Integer.parseInt(val[1].trim());
                                 count++;
@@ -299,39 +307,41 @@ public class CRServer {
         catch(Exception e)
         {
             System.out.println("INIT Exception = " + e);
+            LOGGER.severe("INIT Exception = " + e);
             return 0;
         }
         
     return 1;
     }
 
-  
+    /*
+        Function        :  update
+        Input           :  RequestReply message which contains the request sent by the client
+        returnValue     :  0 or 1 denoting success or failure of the update 
+    */
     public int update(ServerMessage message)
     {
-       // GB;CITI.0.0;11897;
-        System.out.println("Update");
+      //  System.out.println("Update");
+        LOGGER.fine("In Update");
         int reply = 0;
-        // String []retval = (message.split(":")[0]).split(";");
-        //         for (String rval: retval)
-        //                  System.out.println(rval);
+        switch(message.operation)
+        {
+            case "DP":  reply = deposit(message);
+                        break;
+            case "WD":  reply = withdraw(message);
+                        break;
+            default :   reply = 0; 
+                        break;
+        }
 
-                switch(message.operation)
-                {
-                    /*
-                    case "GB":  reply = getBalance(retval[1], retval[2]);
-                                break;
-                    */
-                    case "DP":  reply = deposit(message);
-                                break;
-                    case "WD":  reply = withdraw(message);
-                                break;
-                    default :    break;
-                }
-
-                return reply;
+        return reply;
     }
 
-
+    /*
+        Function        :  deposit
+        Input           :  ServerMessage message which contains the update sent by the predecessor
+        returnValue     :  1 for successful update  
+    */
     public int deposit(ServerMessage message)
     {
         Account currAccount = null;
@@ -347,8 +357,6 @@ public class CRServer {
                 currAccount.processedTrans.add(trans);
 
             reply = "<"+ message.getReqID() + "," + message.getOutcome() + currAccount.balance + ">";
-            
-
         } else {
             currAccount = new Account();
             currAccount.balance = message.getBalance();
@@ -359,9 +367,15 @@ public class CRServer {
         }
 
         System.out.println(reply);
+        LOGGER.info(reply);
         return 1;
     }
 
+    /*
+        Function        :  withdraw
+        Input           :  ServerMessage message which contains the update sent by the predecessor
+        returnValue     :  1 for successful update  
+    */
     public int withdraw(ServerMessage message)
     {
         Account currAccount = null;
@@ -389,11 +403,17 @@ public class CRServer {
         }
 
         System.out.println(reply);
+        LOGGER.info(reply);
         return 1;
     }
 }
 
-
+/*
+        ClassName       :  Account
+        Variables       :  float balance - for storing the balance
+                        :  processedTrans - list containing processed transactions.
+          
+*/
 class Account
 {
     float balance;

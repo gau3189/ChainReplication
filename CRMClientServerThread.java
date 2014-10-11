@@ -1,6 +1,9 @@
 import java.net.*;
 import java.io.*;
 import java.util.*;
+
+import java.util.logging.Logger;
+import java.util.logging.Level;
  
 public class CRMClientServerThread extends Thread {
     
@@ -9,8 +12,8 @@ public class CRMClientServerThread extends Thread {
     private int succPortNo;
     private String hostName;
     private Map<String,Account> accountList;
-
-    public CRMClientServerThread(DatagramSocket socket,String hostName,int succPortNo, Map<String,Account> accountList) 
+    private final  Logger LOGGER ;
+    public CRMClientServerThread(DatagramSocket socket,String hostName,int succPortNo, Map<String,Account> accountList, Logger LOGGER) 
     {
         super("CRMClientServerThread");
         System.out.println("in CRMClientServerThread");
@@ -18,8 +21,13 @@ public class CRMClientServerThread extends Thread {
         this.succPortNo = succPortNo;
         this.hostName = hostName; 
         this.accountList = accountList;
+        this.LOGGER = LOGGER;
     }
      
+    /*
+        Function        :  run
+        Description     :  it is called when the thread is created for this class
+    */ 
     public void run() {
  
         try  
@@ -30,6 +38,8 @@ public class CRMClientServerThread extends Thread {
             ObjectOutputStream out = null;
             RequestReply response = new RequestReply();
             ServerMessage receivedMessage = new ServerMessage();
+
+            LOGGER.info("IN THREAD WAITING FOR CLIENT");
             while (true)
             {
                 byte[] buf = new byte[256];
@@ -47,9 +57,9 @@ public class CRMClientServerThread extends Thread {
                 
                 is.close();
 
-                System.out.println("Recieved = \n" + clientMessage);
+                LOGGER.info("Recieved Request from client = " + clientMessage);
 
-                receivedMessage = update(clientMessage);
+                receivedMessage = processRequest(clientMessage);
 
                 receivedMessage.setPortNumber(packet.getPort());
                 receivedMessage.setHostAddress(packet.getAddress().getHostAddress());
@@ -58,8 +68,9 @@ public class CRMClientServerThread extends Thread {
                 if(succPortNo!=0 && sSocket == null)
                 {
                     System.out.println("CRMClientServerThread Socket creation");
+                    LOGGER.info("CRMClientServerThread Socket creation");
+                    
                     this.sSocket = new Socket(hostName, succPortNo);
-                    //out = new PrintWriter(sSocket.getOutputStream(), true);
                     out = new ObjectOutputStream(sSocket.getOutputStream()); 
                 }
 
@@ -67,8 +78,8 @@ public class CRMClientServerThread extends Thread {
                 if( succPortNo!=0 && out != null)
                 {
                     System.out.println("Sending to other server" + receivedMessage);
+                    LOGGER.info("Sending to other server" + receivedMessage);
                     out.writeObject(receivedMessage);
-                    //out.println(reply);
                 }
                 else
                 {
@@ -88,6 +99,7 @@ public class CRMClientServerThread extends Thread {
                     int port = packet.getPort();
 
                     System.out.println("Sending to client" + receivedMessage);
+                    LOGGER.info("Sending to client" + receivedMessage);
 
                     packet = new DatagramPacket(buf, buf.length, address, port);
                     socket.send(packet);
@@ -100,13 +112,16 @@ public class CRMClientServerThread extends Thread {
         }
     }
 
-    public ServerMessage update(RequestReply message)
+    /*
+        Function        :  processRequest
+        Input           :  RequestReply message which contains the request sent by the client
+        returnValue     :  ServerMessage object is returned for transferring the update to next successor processor  
+    */
+    public ServerMessage processRequest(RequestReply message)
     {
-       // GB;CITI.0.0;11897;
-        System.out.println("Update");
+        System.out.println("Process Request");
+        LOGGER.info("Process Request");
         String reply = null;
-        //String []retval = message.split(";");
-
         ServerMessage receivedMessage = new ServerMessage();
                 
 
@@ -123,13 +138,15 @@ public class CRMClientServerThread extends Thread {
         return receivedMessage;
     }
 
+    /*
+        Function        :  getBalance
+        Input           :  RequestReply message which contains the request sent by the client
+        returnValue     :  ServerMessage object is returned for transferring the update to next successor processor  
+    */
     public ServerMessage getBalance(RequestReply message)
     {
         String reply = null;
         String accountNumber = message.getAccountNumber();
-        //String []val = reqID.split(".");
-        //if (!val[0].equals(this.bankName))
-        //    return "invalidRequest";
 
         Account currAccount = null;
         ServerMessage receivedMessage = new ServerMessage();
@@ -137,8 +154,7 @@ public class CRMClientServerThread extends Thread {
         receivedMessage.setReqID(message.getReqID());
         receivedMessage.setAccountNumber(accountNumber);
         receivedMessage.setOperation("GB");
-
-
+        
         if (this.accountList.containsKey(accountNumber)) 
         {
             currAccount = this.accountList.get(accountNumber);
@@ -150,21 +166,19 @@ public class CRMClientServerThread extends Thread {
 
         receivedMessage.setBalance(currAccount.balance);
         receivedMessage.setOutcome(Outcome.Processed); 
-                
-
-        //reply = "<"+ reqID + "," + "Processed, " + currAccount.balance + ">";
 
         System.out.println(receivedMessage);
         return receivedMessage;
-
     }
+
+    /*
+        Function        :  deposit
+        Input           :  RequestReply message which contains the request sent by the client
+        returnValue     :  ServerMessage object is returned for transferring the update to next successor processor  
+    */
 
     public ServerMessage deposit(RequestReply message)
     {
-        //String []val = reqID.split(".");
-        // if (!val[0].equals(this.bankName))
-        //     return "invalidRequest";
-
         String accountNumber = message.getAccountNumber();
         String reqID = message.getReqID();
         float amount = message.getAmount();
@@ -172,8 +186,7 @@ public class CRMClientServerThread extends Thread {
         Account currAccount = null;
         ServerMessage receivedMessage = new ServerMessage();
 
-        String trans = "DP," + reqID + "," + amount;;
-        String reply = null;
+        String trans = "DP," + reqID + "," + amount;
         Boolean isProcessed = false;
 
 
@@ -187,8 +200,6 @@ public class CRMClientServerThread extends Thread {
             currAccount = this.accountList.get(accountNumber);
             if (currAccount.processedTrans.contains(trans))
             {
-                reply = "<"+ reqID + "," + "Processed, " + currAccount.balance + ">";
-
                 receivedMessage.setBalance(currAccount.balance);
                 receivedMessage.setOutcome(Outcome.Processed); 
                 
@@ -199,8 +210,6 @@ public class CRMClientServerThread extends Thread {
                 for (String s : currAccount.processedTrans)
                     if (s.contains(reqID))
                     {
-                        reply = "<"+ reqID + "," + "InconsistentWithHistory, " + currAccount.balance + ">";
-
                         receivedMessage.setBalance(currAccount.balance);
                         receivedMessage.setOutcome(Outcome.InconsistentWithHistory);
 
@@ -215,8 +224,6 @@ public class CRMClientServerThread extends Thread {
                 currAccount.balance += amount;
                 currAccount.processedTrans.add(trans);
                 
-                reply = "<"+ reqID + "," + "Processed, " + currAccount.balance + ">";
-            
                 receivedMessage.setBalance(currAccount.balance);
                 receivedMessage.setOutcome(Outcome.Processed);
             }
@@ -227,17 +234,20 @@ public class CRMClientServerThread extends Thread {
             
             currAccount.processedTrans.add(trans);
             this.accountList.put(accountNumber,currAccount);
-            reply = "<"+ reqID + "," + "Processed, " + currAccount.balance + ">";
-
+        
             receivedMessage.setBalance(currAccount.balance);
             receivedMessage.setOutcome(Outcome.Processed);
         }
 
         System.out.println(receivedMessage);
-        //return reply;
         return receivedMessage;
     }
 
+    /*
+        Function        :  withdraw
+        Input           :  RequestReply message which contains the request sent by the client
+        returnValue     :  ServerMessage object is returned for transferring the update to next successor processor  
+    */
     public ServerMessage withdraw(RequestReply message)
     {
         String accountNumber = message.getAccountNumber();
@@ -247,8 +257,7 @@ public class CRMClientServerThread extends Thread {
         Account currAccount = null;
         ServerMessage receivedMessage = new ServerMessage();
 
-        String trans = "WD," + reqID + "," + amount;;
-        String reply = null;
+        String trans = "WD," + reqID + "," + amount;
         Boolean isProcessed = false;
 
         receivedMessage.setReqID(reqID);
@@ -261,7 +270,6 @@ public class CRMClientServerThread extends Thread {
             currAccount = this.accountList.get(accountNumber);
             if (currAccount.processedTrans.contains(trans))
             {
-                reply = "<"+ reqID + "," + "Processed, " + currAccount.balance + ">";
                 isProcessed = true;
 
                 receivedMessage.setBalance(currAccount.balance);
@@ -271,10 +279,8 @@ public class CRMClientServerThread extends Thread {
             {
                 for (String s : currAccount.processedTrans)
                 { 
-                    System.out.println("s.contains(reqID)"+s.contains(reqID));
                     if (s.contains(reqID))
                     {
-                        reply = "<"+ reqID + "," + "InconsistentWithHistory, " + currAccount.balance + ">";
                         isProcessed = true;
 
                         receivedMessage.setBalance(currAccount.balance);
@@ -290,14 +296,12 @@ public class CRMClientServerThread extends Thread {
                     System.out.println("Account List = "+currAccount.balance);
                     currAccount.balance -= amount;
                     currAccount.processedTrans.add(trans);
-                    reply = "<"+ reqID + "," + "Processed, " + currAccount.balance + ">";
-
+        
                     receivedMessage.setBalance(currAccount.balance);
                     receivedMessage.setOutcome(Outcome.Processed);
                 }
                 else
                 {
-                    reply = "<"+ reqID + "," + "InsufficientFunds, " + currAccount.balance + ">";
                     receivedMessage.setBalance(currAccount.balance);
                     receivedMessage.setOutcome( Outcome.InsufficientFunds);
                 }
@@ -306,13 +310,11 @@ public class CRMClientServerThread extends Thread {
         } else {
             currAccount = new Account();
             this.accountList.put(accountNumber,currAccount);
-            reply = "<"+ reqID + "," + "InsufficientFunds, " + currAccount.balance + ">";
             receivedMessage.setBalance(currAccount.balance);
             receivedMessage.setOutcome( Outcome.InsufficientFunds);
         }
 
         System.out.println(receivedMessage);
-        //return reply;
         return receivedMessage;
     }
 }

@@ -6,6 +6,8 @@ import java.util.Random;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 public class CClientThread extends Thread {
 
@@ -33,10 +35,10 @@ public class CClientThread extends Thread {
     private String testReq;
 
     private String requestInfo;
-
+    private final  Logger LOGGER ;
 
     public CClientThread(String masterAddress,String headAddress,String tailAddress,int masterPortNo,
-                        int headPortNo, int tailPortNo,String info,String bankName,int waitTime,int id)
+                        int headPortNo, int tailPortNo,String info,String bankName,int waitTime,int id, Logger LOGGER)
     {
         this.masterAddress = masterAddress;
         this.headAddress = headAddress;
@@ -51,23 +53,25 @@ public class CClientThread extends Thread {
 
         Random randAmount = new Random();
         this.accountNumber = randAmount.nextInt(20000); 
+        this.LOGGER = LOGGER;
 
     }
-    public void decode(String info)
-    {
-        String [] rval = info.trim().split(",");
-        this.seed = Integer.parseInt(rval[0].trim());
-        this.numMessages = Integer.parseInt(rval[1].trim());
-        this.gbMessage = (int)Math.round(this.numMessages * Float.parseFloat(rval[2].trim()));
-        this.dpMessage = (int)Math.round(this.numMessages * Float.parseFloat(rval[3].trim()));
-        this.wdMessage = (int)Math.round(this.numMessages * Float.parseFloat(rval[4].trim()));
-        this.trMessage = (int)Math.round(this.numMessages * Float.parseFloat(rval[5].trim()));
-    }
+    
 
-
+    /*
+        Function        :  run
+        Description     :  it is called when the thread is created for this class
+    */
     public void run() { 
          
         decode(this.requestInfo); 
+
+        LOGGER.info("seed = "+this.seed);
+        LOGGER.info("numMessages = "+this.numMessages);
+        LOGGER.info("gbMessage= "+ this.gbMessage);
+        LOGGER.info("dpMessage= "+ this.dpMessage);
+        LOGGER.info("wdMessage= "+ this.wdMessage);
+        LOGGER.info("trMessage= "+this.trMessage);
 
         System.out.println("seed = "+this.seed);
         System.out.println("numMessages = "+this.numMessages);
@@ -100,6 +104,7 @@ public class CClientThread extends Thread {
                     if( mCount <= 0)
                     {
                         System.out.println("Done With all messages");
+                        LOGGER.info("Done With all messages");
                         break;
                     }   
                     switch(ch)
@@ -125,6 +130,8 @@ public class CClientThread extends Thread {
                     byte[] buf = new byte[256];
                     byte[] rbuf = new byte[5000];
                     
+                    LOGGER.info("Sending Request to server = " + sendRequest + "at" + sendPortNo);
+
                     ByteArrayOutputStream bStream = new ByteArrayOutputStream();
                     ObjectOutput oo = new ObjectOutputStream(bStream); 
                     oo.writeObject(sendRequest);
@@ -144,25 +151,27 @@ public class CClientThread extends Thread {
                     int byteCount = packet.getLength();
                     ByteArrayInputStream byteStream = new ByteArrayInputStream(rbuf);
                     
-                    System.out.println(byteStream );
                     ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(byteStream));
                     RequestReply response = (RequestReply) is.readObject();
-                    
                     is.close();
                     //System.out.println("received = <" + response.reqID + "," +
                     //                    response.outcome + "," + response.balance +"> \t" + "for client = " + id);
                     System.out.println("received = " + response.showReply()+" \t" + "for client = " + id);
                     
-                    
+                    LOGGER.info("received message from server =" + response.showReply() +
+                                "for account Number = " + response.getAccountNumber()+ 
+                                "for client = " + id);
                     //System.out.println("Client: " + fromUser);
                     Thread.sleep(5000);
                 }
             
         } catch (UnknownHostException e) {
             System.err.println("Don't know about host " + hostName);
+            LOGGER.severe("Don't know about host " + hostName);
             System.exit(1);
         } catch (Exception e) {
             System.err.println("Exception " + e);
+            LOGGER.severe("Exception " + e);
             e.printStackTrace();
             System.exit(1);
         }
@@ -170,6 +179,25 @@ public class CClientThread extends Thread {
         socket.close();
     }
 
+    /*
+        Function        :  decode
+        Input           :  string for decoding request message  read from the configuration file. 
+    */
+    public void decode(String info)
+    {
+        String [] rval = info.trim().split(",");
+        this.seed = Integer.parseInt(rval[0].trim());
+        this.numMessages = Integer.parseInt(rval[1].trim());
+        this.gbMessage = (int)Math.round(this.numMessages * Float.parseFloat(rval[2].trim()));
+        this.dpMessage = (int)Math.round(this.numMessages * Float.parseFloat(rval[3].trim()));
+        this.wdMessage = (int)Math.round(this.numMessages * Float.parseFloat(rval[4].trim()));
+        this.trMessage = (int)Math.round(this.numMessages * Float.parseFloat(rval[5].trim()));
+    }
+
+    /*
+        Function        :  getRandomChoice
+        returnValue     :  returns choice for generating either deposit or withdraw or check balance. 
+    */
     public int getRandomChoice()
     {
         if (gbMessage > 0)
@@ -182,6 +210,10 @@ public class CClientThread extends Thread {
         return 0;
     }
 
+    /*
+        Function        :  getDepositDetails
+        returnValue     :  RequestReply message which contains the request for the server
+    */
     public RequestReply getDepositDetails()
     {
         RequestReply message = new RequestReply();
@@ -203,7 +235,7 @@ public class CClientThread extends Thread {
 
         //     return val[0]+";"+val[1]+";"+val[2]+";"+"1234";
         // }
-        else
+        //else
         {
             /*generate deposit req*/
             Random randAmount = new Random();
@@ -211,10 +243,11 @@ public class CClientThread extends Thread {
             int amount = randAmount.nextInt(1000);
             int reqID = randAmount.nextInt(seed);
 
-            System.out.println("ID : " +id+"ReqId= "+reqID);
-            System.out.println("ID : " +id+"amount= "+amount);
+            
 
             id =  this.bankName + "." + this.id + "." + reqID ;
+            System.out.println("ID : " +this.id +"ReqId= "+reqID);
+            System.out.println("ID : " +this.id +"amount= "+amount);
 
             message.setReqID(id);
             message.setBankName(this.bankName);
@@ -229,7 +262,11 @@ public class CClientThread extends Thread {
         return message;
     }
 
-    public  RequestReply getWithdrawDetails()
+    /*
+        Function        :  getWithdrawDetails
+        returnValue     :  RequestReply message which contains the request for the server
+    */
+    public RequestReply getWithdrawDetails()
     {
         RequestReply message = new RequestReply();
         String id = null;
@@ -261,6 +298,10 @@ public class CClientThread extends Thread {
         return message;   
     }
 
+    /*
+        Function        :  getCheckBalaceDetails
+        returnValue     :  RequestReply message which contains the request for the server
+    */
     public RequestReply getCheckBalaceDetails()
     {
         RequestReply message = new RequestReply();
@@ -287,11 +328,16 @@ public class CClientThread extends Thread {
         return message;
     }
 
-    public  String getTransferDetails()
+    /*
+        Function        :  getTransferDetails
+        returnValue     :  ServerMessage object is returned for transferring the update to next successor processor  
+    */
+    public  RequestReply getTransferDetails()
     {
         trMessage--;
+        RequestReply message = new RequestReply();
         if (trMessage <= 0)
-                return "nop";
+                return null;
         else
         {
             /*generate deposit req*/
@@ -305,6 +351,6 @@ public class CClientThread extends Thread {
             System.out.println("ID : " +id+"amount= "+amount);
             */
         }
-        return "TR,reqId,sr_acc,des_acc,des_bank,amt";
+        return message;
     }
 }

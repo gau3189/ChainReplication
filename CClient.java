@@ -12,6 +12,12 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import java.util.logging.Logger;
+import java.util.logging.Level;
+import java.util.logging.FileHandler;
+import java.util.logging.SimpleFormatter;
+
  
 public class CClient {
 
@@ -31,6 +37,8 @@ public class CClient {
     private String bankName;
     private String configFile;
 
+    private final static Logger LOGGER = Logger.getLogger(CClient.class.getName());
+    private static FileHandler fh;
 
     public CClient(String configFile, String bankname)
     {
@@ -52,6 +60,28 @@ public class CClient {
             {
                 int result = client.init();
                 
+                fh = new FileHandler("./Logs/client@"+ client.bankName + ".log",true);  
+                LOGGER.addHandler(fh);
+                LOGGER.setUseParentHandlers(false);
+                LOGGER.setLevel(Level.FINE);
+                SimpleFormatter formatter = new SimpleFormatter();  
+                fh.setFormatter(formatter);  
+        
+                LOGGER.info("################################ < Intial Configuration > ###############################");
+
+                LOGGER.config("master addr = "+ client.masterAddress);
+                LOGGER.config("master port = "+ client.masterPortNo);
+                LOGGER.config("head address = "+ client.headAddress);
+                LOGGER.config("head port = "+ client.headPortNo);
+                LOGGER.config("tail address = "+ client.tailAddress);  
+                LOGGER.config("tail port = "+ client.tailPortNo);
+                LOGGER.config("client Count = "+ client.clientCount);  
+                LOGGER.config("client Request Info  = "+ client.clientRequestInfo);
+                LOGGER.config("client Wait Time  = "+ client.clientWaitTime);
+
+
+                LOGGER.info("################################ </ Intial Configuration >###############################");
+                
 
                 System.out.println("master addr = "+ client.masterAddress);
                 System.out.println("master port = "+ client.masterPortNo);
@@ -68,7 +98,7 @@ public class CClient {
                     new CClientThread(client.masterAddress,client.headAddress,client.tailAddress,
                                         client.masterPortNo,client.headPortNo,client.tailPortNo,
                                         client.clientRequestInfo,client.bankName,
-                                        client.clientWaitTime, i).start();
+                                        client.clientWaitTime, i, LOGGER).start();
                  
             }
             catch(Exception e)
