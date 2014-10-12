@@ -1,15 +1,16 @@
 import java.io.Serializable;
 
 public class ServerMessage implements Serializable {
+	
     private static final long serialVersionUID = 5950169519310163575L;
-    public String operation;
-	public String accountNumber;
-	public String hostAddress;
-	public int portNo;
-	public String reqID;
-	public float balance;
-	public float amount;
-	public Outcome outcome;
+    private String operation;
+	private String accountNumber;
+	private String hostAddress;
+	private int portNo;
+	private String reqID;
+	private float balance;
+	private float amount;
+	private Outcome outcome;
 
     public String getReqID() {
         return reqID;

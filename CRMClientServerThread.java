@@ -51,7 +51,6 @@ public class CRMClientServerThread extends Thread {
                 int byteCount = packet.getLength();
                 ByteArrayInputStream byteStream = new ByteArrayInputStream(buf);
                 
-                System.out.println(byteStream );
                 ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(byteStream));
                 RequestReply clientMessage = (RequestReply) is.readObject();
                 
@@ -83,11 +82,11 @@ public class CRMClientServerThread extends Thread {
                 }
                 else
                 {
-                    response.setReqID(receivedMessage.reqID);
-                    response.setBalance(receivedMessage.balance);
-                    response.setOutcome(receivedMessage.outcome);
-                    response.setOperation(receivedMessage.operation);
-
+                    response.setReqID(receivedMessage.getReqID());
+                    response.setBalance(receivedMessage.getBalance());
+                    response.setOutcome(receivedMessage.getOutcome());
+                    response.setOperation(receivedMessage.getOperation());
+                    response.setAccountNumber(receivedMessage.getAccountNumber());
                     ByteArrayOutputStream bStream = new ByteArrayOutputStream();
                     ObjectOutput oo = new ObjectOutputStream(bStream); 
                     oo.writeObject(response);
@@ -98,7 +97,7 @@ public class CRMClientServerThread extends Thread {
                     InetAddress address = packet.getAddress();
                     int port = packet.getPort();
 
-                    System.out.println("Sending to client" + receivedMessage);
+                    //System.out.println("Sending to client" + receivedMessage);
                     LOGGER.info("Sending to client" + receivedMessage);
 
                     packet = new DatagramPacket(buf, buf.length, address, port);
@@ -119,19 +118,19 @@ public class CRMClientServerThread extends Thread {
     */
     public ServerMessage processRequest(RequestReply message)
     {
-        System.out.println("Process Request");
+        //System.out.println("Process Request");
         LOGGER.info("Process Request");
         String reply = null;
         ServerMessage receivedMessage = new ServerMessage();
                 
 
-        switch(message.getOperation())
+        switch(message.getOperation().toLowerCase())
         {
-            case "GB":  receivedMessage = getBalance(message);
+            case "gb":  receivedMessage = getBalance(message);
                         break;
-            case "DP":  receivedMessage = deposit(message);
+            case "dp":  receivedMessage = deposit(message);
                         break;
-            case "WD":  receivedMessage = withdraw(message);
+            case "wd":  receivedMessage = withdraw(message);
                         break;
             default:    break;
         }
@@ -145,6 +144,7 @@ public class CRMClientServerThread extends Thread {
     */
     public ServerMessage getBalance(RequestReply message)
     {
+        System.out.println("In get balance");
         String reply = null;
         String accountNumber = message.getAccountNumber();
 
@@ -167,6 +167,7 @@ public class CRMClientServerThread extends Thread {
         receivedMessage.setBalance(currAccount.balance);
         receivedMessage.setOutcome(Outcome.Processed); 
 
+
         System.out.println(receivedMessage);
         return receivedMessage;
     }
@@ -179,6 +180,8 @@ public class CRMClientServerThread extends Thread {
 
     public ServerMessage deposit(RequestReply message)
     {
+        System.out.println("In Deposit");
+
         String accountNumber = message.getAccountNumber();
         String reqID = message.getReqID();
         float amount = message.getAmount();
@@ -198,6 +201,7 @@ public class CRMClientServerThread extends Thread {
         if (this.accountList.containsKey(accountNumber)) {
 
             currAccount = this.accountList.get(accountNumber);
+//            System.out.println("Account List = "+currAccount.balance);
             if (currAccount.processedTrans.contains(trans))
             {
                 receivedMessage.setBalance(currAccount.balance);
@@ -219,11 +223,9 @@ public class CRMClientServerThread extends Thread {
             }
             if (!isProcessed)
             {
-                System.out.println("Account List = "+currAccount.balance);
-
                 currAccount.balance += amount;
                 currAccount.processedTrans.add(trans);
-                
+                this.accountList.put(accountNumber,currAccount);
                 receivedMessage.setBalance(currAccount.balance);
                 receivedMessage.setOutcome(Outcome.Processed);
             }
@@ -239,7 +241,10 @@ public class CRMClientServerThread extends Thread {
             receivedMessage.setOutcome(Outcome.Processed);
         }
 
+        LOGGER.info(String.valueOf(accountNumber));
+        LOGGER.info(Arrays.toString(currAccount.processedTrans.toArray()));
         System.out.println(receivedMessage);
+
         return receivedMessage;
     }
 
@@ -250,6 +255,7 @@ public class CRMClientServerThread extends Thread {
     */
     public ServerMessage withdraw(RequestReply message)
     {
+        System.out.println("In withdraw");
         String accountNumber = message.getAccountNumber();
         String reqID = message.getReqID();
         float amount = message.getAmount();
@@ -265,7 +271,7 @@ public class CRMClientServerThread extends Thread {
         receivedMessage.setOperation("WD");
         receivedMessage.setAmount(amount);
 
-        if (this.accountList.containsKey(receivedMessage.accountNumber)) {
+        if (this.accountList.containsKey(accountNumber)) {
 
             currAccount = this.accountList.get(accountNumber);
             if (currAccount.processedTrans.contains(trans))
@@ -293,10 +299,10 @@ public class CRMClientServerThread extends Thread {
             {
                 if (currAccount.balance >= amount)
                 {
-                    System.out.println("Account List = "+currAccount.balance);
                     currAccount.balance -= amount;
                     currAccount.processedTrans.add(trans);
         
+                    this.accountList.put(accountNumber,currAccount);
                     receivedMessage.setBalance(currAccount.balance);
                     receivedMessage.setOutcome(Outcome.Processed);
                 }
@@ -314,7 +320,10 @@ public class CRMClientServerThread extends Thread {
             receivedMessage.setOutcome( Outcome.InsufficientFunds);
         }
 
+        LOGGER.info(String.valueOf(accountNumber));
+        LOGGER.info(Arrays.toString(currAccount.processedTrans.toArray()));
         System.out.println(receivedMessage);
+
         return receivedMessage;
     }
 }

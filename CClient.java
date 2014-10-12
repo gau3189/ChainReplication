@@ -1,9 +1,6 @@
 import java.io.*;
 import java.net.*;
 import java.util.*;
-import java.io.*;
-import java.net.*;
-import java.util.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -37,6 +34,7 @@ public class CClient {
     private String bankName;
     private String configFile;
 
+    private List<String> requests;
     private final static Logger LOGGER = Logger.getLogger(CClient.class.getName());
     private static FileHandler fh;
 
@@ -44,6 +42,7 @@ public class CClient {
     {
         this.bankName = bankname;
         this.configFile = configFile;
+        this.requests = new ArrayList<String>();
     }
 
     public static void main(String[] args) throws IOException {
@@ -94,10 +93,14 @@ public class CClient {
                 System.out.println("client Request Info  = "+ client.clientRequestInfo);
                 System.out.println("client Wait Time  = "+ client.clientWaitTime);
 
+                System.out.println("requests  = "+ client.requests);
+
+               // System.exit(1);
+                
                 for (int i = 0; i < client.clientCount; i++)
                     new CClientThread(client.masterAddress,client.headAddress,client.tailAddress,
                                         client.masterPortNo,client.headPortNo,client.tailPortNo,
-                                        client.clientRequestInfo,client.bankName,
+                                        client.requests,client.bankName,
                                         client.clientWaitTime, i, LOGGER).start();
                  
             }
@@ -122,12 +125,12 @@ public class CClient {
             while ((line = reader.readLine()) != null ) {
                 if(!line.isEmpty()) 
                 {
-                    if (count == 11)
+                    if (count == 3 && !isCorrectBank)
                         break;
-
-                    if (line.trim().equals("</Bank1>") || line.trim().equals("</Bank1>") || line.trim().equals("</Bank1>"))
+                    
+                    if (line.trim().toLowerCase().contains("</bank"))
                         isCorrectBank = false;
-
+                   
                     String []val = line.split(":");
                     if (val.length == 2)
                     {
@@ -142,61 +145,47 @@ public class CClient {
                             count++;
                         }
 
-                        if (val[1].trim().equals(bankName))
-                        {   
-                            isCorrectBank = true;
-                            count++;
-                        }
-                        
-                        if (isCorrectBank && val[0].trim().equals("CLIENTS"))
+                        if (!isCorrectBank)
                         {
-
+                            if (val[1].trim().equals(bankName))
+                            {   
+                                isCorrectBank = true;
+                                count++;
+                            }
+                            else
+                                isCorrectBank = false;
+                            
+                        }
+                        if (isCorrectBank && val[0].trim().equals("CLIENTS"))
                             clientCount = Integer.parseInt(val[1].trim());
-                            count++;
-                        } 
+                         
 
                         if (isCorrectBank && val[0].trim().equals("LENGTH"))
-                        {
-
                             chainLength= Integer.parseInt(val[1].trim());
-                            count++;
-                        } 
-
+                        
                         if (isCorrectBank && val[0].trim().equals("REQUEST_INFO") )
-                        {
                             clientRequestInfo = val[1].trim();
-                            count++;   
-                        }  
-
+                        
                         if (isCorrectBank && val[0].trim().equals("CLIENT_RESEND") )
-                        {
                             clientWaitTime = Integer.parseInt(val[1].trim());
-                            count++;   
-                        } 
-
+                        
                         if (isCorrectBank && val[0].trim().equals("HOST_ADDRESS_1") )
-                        {
                             headAddress = val[1].trim();
-                            count++;   
-                        } 
-
+                        
                         if (isCorrectBank && val[0].trim().equals("UDP_PORT_NUMBER_1") )
-                        {
                             headPortNo = Integer.parseInt(val[1].trim());
-                            count++;   
-                        } 
+                         
 
                         if (isCorrectBank && val[0].trim().equals("HOST_ADDRESS_"+chainLength) )
-                        {
                             tailAddress = val[1].trim();
-                            count++;   
-                        } 
-
+                        
                         if (isCorrectBank && val[0].trim().equals("UDP_PORT_NUMBER_"+chainLength) )
-                        {
                             tailPortNo = Integer.parseInt(val[1].trim());
-                            count++;   
-                        } 
+                         
+
+                        if (isCorrectBank && val[0].trim().contains("REQUEST_"))
+                            requests.add(val[1].trim());
+                        
                     } 
                 }    
             }

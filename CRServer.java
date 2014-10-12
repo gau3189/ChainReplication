@@ -324,11 +324,11 @@ public class CRServer {
       //  System.out.println("Update");
         LOGGER.fine("In Update");
         int reply = 0;
-        switch(message.operation)
+        switch(message.getOperation().toLowerCase())
         {
-            case "DP":  reply = deposit(message);
+            case "dp":  reply = deposit(message);
                         break;
-            case "WD":  reply = withdraw(message);
+            case "wd":  reply = withdraw(message);
                         break;
             default :   reply = 0; 
                         break;
@@ -344,18 +344,21 @@ public class CRServer {
     */
     public int deposit(ServerMessage message)
     {
+        System.out.println("In Deposit");
         Account currAccount = null;
         String trans = "DP," + message.getReqID() + "," + message.getAmount();
         String reply = null;
+
         if (this.accountList.containsKey(message.getAccountNumber())) {
 
             currAccount = this.accountList.get(message.getAccountNumber());
+            currAccount.balance = message.getBalance();
             
-            System.out.println("Account List = "+currAccount);
-            currAccount.balance = message.getAmount();
             if (message.getOutcome().equals(Outcome.Processed))
+            {
                 currAccount.processedTrans.add(trans);
-
+            }
+            this.accountList.put(message.getAccountNumber(),currAccount);
             reply = "<"+ message.getReqID() + "," + message.getOutcome() + currAccount.balance + ">";
         } else {
             currAccount = new Account();
@@ -366,8 +369,10 @@ public class CRServer {
             reply = "<"+ message.getReqID() + "," + "Processed, " + currAccount.balance + ">";
         }
 
-        System.out.println(reply);
-        LOGGER.info(reply);
+       // System.out.println(reply);
+       // LOGGER.info(reply);
+        LOGGER.info(String.valueOf(message.getAccountNumber()));
+        LOGGER.info(Arrays.toString(currAccount.processedTrans.toArray()));
         return 1;
     }
 
@@ -378,18 +383,19 @@ public class CRServer {
     */
     public int withdraw(ServerMessage message)
     {
+        System.out.println("In Withdraw");
         Account currAccount = null;
         String trans = "DP," + message.getReqID() + "," + message.getAmount();
         String reply = null;
         if (this.accountList.containsKey(message.getAccountNumber())) {
 
             currAccount = this.accountList.get(message.getAccountNumber());
-            
-            System.out.println("Account List = "+currAccount.balance);
-            currAccount.balance = message.getAmount();
+            currAccount.balance = message.getBalance();
             if (message.getOutcome().equals(Outcome.Processed))
+            {
                 currAccount.processedTrans.add(trans);
-
+            }
+            this.accountList.put(message.getAccountNumber(),currAccount);
             reply = "<"+ message.getReqID() + "," + message.getOutcome() + currAccount.balance + ">";
             
 
@@ -402,8 +408,11 @@ public class CRServer {
             reply = "<"+ message.getReqID() + "," + "Processed, " + currAccount.balance + ">";
         }
 
-        System.out.println(reply);
-        LOGGER.info(reply);
+        //System.out.println(reply);
+        LOGGER.info(String.valueOf(message.getAccountNumber()));
+        LOGGER.info(Arrays.toString(currAccount.processedTrans.toArray()));
+        
+        //LOGGER.info(reply);
         return 1;
     }
 }
@@ -414,7 +423,7 @@ public class CRServer {
                         :  processedTrans - list containing processed transactions.
           
 */
-class Account
+class Account 
 {
     float balance;
     List <String> processedTrans;
@@ -424,5 +433,11 @@ class Account
         this.balance = 0;
         this.processedTrans = new ArrayList<String>();
     }
+
+     public String toString() {
+        return " <balance = " + balance;
+    }
+
+
 }
 

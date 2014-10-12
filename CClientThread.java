@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.Random;
 
@@ -21,6 +22,7 @@ public class CClientThread extends Thread {
     private int headPortNo;
     private int tailPortNo;
     private int accountNumber;
+    private List<String> requests;
 
     private int id;
     private int waitTime;
@@ -34,11 +36,11 @@ public class CClientThread extends Thread {
 
     private String testReq;
 
-    private String requestInfo;
+    //private String requestInfo;
     private final  Logger LOGGER ;
 
     public CClientThread(String masterAddress,String headAddress,String tailAddress,int masterPortNo,
-                        int headPortNo, int tailPortNo,String info,String bankName,int waitTime,int id, Logger LOGGER)
+                        int headPortNo, int tailPortNo,List<String> requests,String bankName,int waitTime,int id, Logger LOGGER)
     {
         this.masterAddress = masterAddress;
         this.headAddress = headAddress;
@@ -47,7 +49,7 @@ public class CClientThread extends Thread {
         this.masterPortNo = masterPortNo;
         this.headPortNo = headPortNo;
         this.tailPortNo = tailPortNo;
-        this.requestInfo = info;
+        this.requests = requests;
         this.id = id;
         this.waitTime = waitTime;
 
@@ -64,128 +66,180 @@ public class CClientThread extends Thread {
     */
     public void run() { 
          
-        decode(this.requestInfo); 
-
-        LOGGER.info("seed = "+this.seed);
-        LOGGER.info("numMessages = "+this.numMessages);
-        LOGGER.info("gbMessage= "+ this.gbMessage);
-        LOGGER.info("dpMessage= "+ this.dpMessage);
-        LOGGER.info("wdMessage= "+ this.wdMessage);
-        LOGGER.info("trMessage= "+this.trMessage);
-
-        System.out.println("seed = "+this.seed);
-        System.out.println("numMessages = "+this.numMessages);
-        System.out.println("gbMessage= "+ this.gbMessage);
-        System.out.println("dpMessage= "+ this.dpMessage);
-        System.out.println("wdMessage= "+ this.wdMessage);
-        System.out.println("trMessage= "+this.trMessage);
-        
-        
         DatagramSocket socket = null;
-        String hostName = "localhost";
         try 
         {
-
             socket = new DatagramSocket();
-            BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-           
             RequestReply sendRequest = null;
-            int mCount = 0;
-            
-            while (true) {
+            int sendPortNo = 0;
+            if (this.requests.size() == 1) 
+            {    
+                decode(this.requests); 
 
-                    mCount = this.gbMessage + this.dpMessage +this.wdMessage;
-                    int ch = getRandomChoice();
-                    int sendPortNo = 0;
-                    // System.out.println("choice for id="+this.id + "\t choice = " + ch);
-                    //int ch = 1 + rand.nextInt(3);
-                    //System.out.println("choice for id="+this.id + "\t choice = " + ch);
+                LOGGER.info("seed = "+this.seed);
+                LOGGER.info("numMessages = "+this.numMessages);
+                LOGGER.info("gbMessage= "+ this.gbMessage);
+                LOGGER.info("dpMessage= "+ this.dpMessage);
+                LOGGER.info("wdMessage= "+ this.wdMessage);
+                LOGGER.info("trMessage= "+this.trMessage);
 
-                    if( mCount <= 0)
-                    {
-                        System.out.println("Done With all messages");
-                        LOGGER.info("Done With all messages");
-                        break;
-                    }   
-                    switch(ch)
-                    {
-                        case 1: sendRequest = getDepositDetails();
-                                sendPortNo = headPortNo;
-                                break;
-
-                        case 2: sendRequest = getWithdrawDetails();
-                                sendPortNo = headPortNo;
-                                break;
-
-                        case 3: sendRequest = getCheckBalaceDetails();
-                                sendPortNo = tailPortNo;
-                                break;
-
-                        default: break;
-                    }
+                System.out.println("seed = "+this.seed);
+                System.out.println("numMessages = "+this.numMessages);
+                System.out.println("gbMessage= "+ this.gbMessage);
+                System.out.println("dpMessage= "+ this.dpMessage);
+                System.out.println("wdMessage= "+ this.wdMessage);
+                System.out.println("trMessage= "+this.trMessage);
                 
-                    if (sendRequest == null)
-                            continue;
-
-                    byte[] buf = new byte[256];
-                    byte[] rbuf = new byte[5000];
                     
-                    LOGGER.info("Sending Request to server = " + sendRequest + "at" + sendPortNo);
+                int mCount = 0;
+                
+                while (true) {
 
-                    ByteArrayOutputStream bStream = new ByteArrayOutputStream();
-                    ObjectOutput oo = new ObjectOutputStream(bStream); 
-                    oo.writeObject(sendRequest);
-                    oo.close();
+                        mCount = this.gbMessage + this.dpMessage +this.wdMessage;
+                        int ch = getRandomChoice();
+                        
+                        // System.out.println("choice for id="+this.id + "\t choice = " + ch);
+                        //int ch = 1 + rand.nextInt(3);
+                        //System.out.println("choice for id="+this.id + "\t choice = " + ch);
 
-                    buf = bStream.toByteArray();
+                        if( mCount <= 0)
+                        {
+                            System.out.println("Done With all messages");
+                            LOGGER.info("Done With all messages");
+                            break;
+                        }   
+                        switch(ch)
+                        {
+                            case 1: sendRequest = getDepositDetails();
+                                    sendPortNo = headPortNo;
+                                    break;
 
-                    InetAddress address = InetAddress.getByName(hostName);
-                    DatagramPacket packet = new DatagramPacket(buf, buf.length, address, sendPortNo);
-                    socket.send(packet);
-                 
-                    packet = new DatagramPacket(rbuf, rbuf.length);
-                    socket.receive(packet);
-             
+                            case 2: sendRequest = getWithdrawDetails();
+                                    sendPortNo = headPortNo;
+                                    break;
+
+                            case 3: sendRequest = getCheckBalaceDetails();
+                                    sendPortNo = tailPortNo;
+                                    break;
+
+                            default: break;
+                        }
                     
-                    System.out.println("receiveing class object");
-                    int byteCount = packet.getLength();
-                    ByteArrayInputStream byteStream = new ByteArrayInputStream(rbuf);
-                    
-                    ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(byteStream));
-                    RequestReply response = (RequestReply) is.readObject();
-                    is.close();
-                    //System.out.println("received = <" + response.reqID + "," +
-                    //                    response.outcome + "," + response.balance +"> \t" + "for client = " + id);
-                    System.out.println("received = " + response.showReply()+" \t" + "for client = " + id);
-                    
-                    LOGGER.info("received message from server =" + response.showReply() +
-                                "for account Number = " + response.getAccountNumber()+ 
-                                "for client = " + id);
-                    //System.out.println("Client: " + fromUser);
-                    Thread.sleep(5000);
+                        if (sendRequest == null)
+                                continue;
+
+                        sendMessage(sendRequest, sendPortNo, socket);
+                    }
                 }
+                else
+                {
+                    //DP, 1.1.1, 4600
+                    for (String request : this.requests)
+                    {
+                        String []val = request.split(",");
+
+                        sendRequest = new RequestReply();
+                        sendRequest.setOperation(val[0].trim());
+                        sendRequest.setReqID(val[1].trim());
+
+
+                        sendRequest.setBankName(this.bankName);
+                        sendRequest.setAccountNumber(val[2].trim());
+                        
+                        
+                        switch(val[0].trim().toLowerCase())
+                        {
+                            case "dp":  
+                            case "wd":  sendRequest.setAmount(Float.parseFloat(val[3]));
+                                        sendPortNo = headPortNo;
+                                        break;
+
+                            case "gb":  sendPortNo = tailPortNo;
+                                        break;
+
+                            default: break;
+                        }
+                        sendMessage(sendRequest, sendPortNo, socket);
+                    }
+
+                }
+            }
+            catch (Exception e) {
+                System.err.println("Exception " + e);
+                LOGGER.severe("Exception " + e);
+                e.printStackTrace();
+                System.exit(1);
+            }
+        
+            socket.close();
+        
+    }
+    /*
+        Function        :  sendMessage
+        Input           :  RequestReply for sending request to server at portno sendPortNo using datagram socket. 
+    */
+
+    public void sendMessage(RequestReply sendRequest,int sendPortNo,DatagramSocket socket)
+    {
+        try 
+        {  
+            String hostName = "localhost";
+            byte[] buf = new byte[256];
+            byte[] rbuf = new byte[5000];
             
-        } catch (UnknownHostException e) {
-            System.err.println("Don't know about host " + hostName);
-            LOGGER.severe("Don't know about host " + hostName);
-            System.exit(1);
-        } catch (Exception e) {
+            LOGGER.info("Sending Request to server = " + sendRequest + "at" + sendPortNo);
+
+            ByteArrayOutputStream bStream = new ByteArrayOutputStream();
+            ObjectOutput oo = new ObjectOutputStream(bStream); 
+            oo.writeObject(sendRequest);
+            oo.close();
+
+            buf = bStream.toByteArray();
+
+            InetAddress address = InetAddress.getByName(hostName);
+            DatagramPacket packet = new DatagramPacket(buf, buf.length, address, sendPortNo);
+            socket.send(packet);
+         
+            packet = new DatagramPacket(rbuf, rbuf.length);
+            socket.receive(packet);
+     
+            
+            int byteCount = packet.getLength();
+            ByteArrayInputStream byteStream = new ByteArrayInputStream(rbuf);
+            
+            ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(byteStream));
+            RequestReply response = (RequestReply) is.readObject();
+            is.close();
+            //System.out.println("received = <" + response.reqID + "," +
+            //                    response.outcome + "," + response.balance +"> \t" + "for client = " + id);
+            System.out.println("received message from server =" + response.showReply() +
+                                "for client = " + id);
+            
+            LOGGER.info("received message from server =" + response.showReply() +
+                        "for client = " + id);
+
+            Thread.sleep(5000);
+        } 
+        catch (UnknownHostException e) {
+                System.err.println("Don't know about host ");
+                LOGGER.severe("Don't know about host " );
+                System.exit(1);
+            }
+        catch (Exception e) {
             System.err.println("Exception " + e);
             LOGGER.severe("Exception " + e);
             e.printStackTrace();
             System.exit(1);
         }
 
-        socket.close();
     }
-
     /*
         Function        :  decode
         Input           :  string for decoding request message  read from the configuration file. 
     */
-    public void decode(String info)
+    public void decode(List<String> requests)
     {
-        String [] rval = info.trim().split(",");
+        String [] rval = requests.get(0).split(",");
         this.seed = Integer.parseInt(rval[0].trim());
         this.numMessages = Integer.parseInt(rval[1].trim());
         this.gbMessage = (int)Math.round(this.numMessages * Float.parseFloat(rval[2].trim()));
@@ -282,8 +336,8 @@ public class CClientThread extends Thread {
             int amount = randAmount.nextInt(1000);
             int reqID = randAmount.nextInt(seed);
 
-            System.out.println("ID : " +id+"ReqId = "+reqID);
-            System.out.println("ID : " +id+"amount= "+amount);
+            System.out.println("ID : " +this.id+"ReqId = "+reqID);
+            System.out.println("ID : " +this.id+"amount= "+amount);
 
             id =  this.bankName + "." + this.id + "." + reqID ;
 
@@ -315,7 +369,7 @@ public class CClientThread extends Thread {
 
             Random randSeq = new Random();
             int reqID = randSeq.nextInt(seed);
-            System.out.println("ID : " +id+"reqID= "+reqID);
+            System.out.println("ID : " +this.id+"reqID= "+reqID);
 
             id =  this.bankName + "." + this.id + "." + reqID ;
 

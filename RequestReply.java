@@ -83,6 +83,6 @@ public class RequestReply implements Serializable {
 
     public String showReply() {
      //  return "Id = " + getId() + " ; Name = " + getName();
-    	return " <reqID = "+ reqID +  ",outcome = " + outcome + ",balance=" + balance + ">";
+    	return " <reqID = "+ reqID +  ",outcome = " + outcome + ",balance=" + balance + ",accountNumber=" + accountNumber +  ">";
     }
 }
