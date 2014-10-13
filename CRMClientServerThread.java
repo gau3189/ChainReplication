@@ -10,16 +10,16 @@ public class CRMClientServerThread extends Thread {
     private DatagramSocket socket = null;
     private Socket sSocket = null;
     private int succPortNo;
-    private String hostName;
+    private String successor;
     private Map<String,Account> accountList;
     private final  Logger LOGGER ;
-    public CRMClientServerThread(DatagramSocket socket,String hostName,int succPortNo, Map<String,Account> accountList, Logger LOGGER) 
+    public CRMClientServerThread(DatagramSocket socket,String successor,int succPortNo, Map<String,Account> accountList, Logger LOGGER) 
     {
         super("CRMClientServerThread");
         System.out.println("in CRMClientServerThread");
         this.socket = socket;
         this.succPortNo = succPortNo;
-        this.hostName = hostName; 
+        this.successor = successor; 
         this.accountList = accountList;
         this.LOGGER = LOGGER;
     }
@@ -44,7 +44,7 @@ public class CRMClientServerThread extends Thread {
             {
                 byte[] buf = new byte[256];
  
-                // receive request
+                /* receive request */
                 DatagramPacket packet = new DatagramPacket(buf, buf.length);
                 socket.receive(packet);
             
@@ -63,21 +63,18 @@ public class CRMClientServerThread extends Thread {
                 receivedMessage.setPortNumber(packet.getPort());
                 receivedMessage.setHostAddress(packet.getAddress().getHostAddress());
 
-
                 if(succPortNo!=0 && sSocket == null)
                 {
                     System.out.println("CRMClientServerThread Socket creation");
                     LOGGER.info("CRMClientServerThread Socket creation");
                     
-                    this.sSocket = new Socket(hostName, succPortNo);
+                    this.sSocket = new Socket(InetAddress.getByName(successor), succPortNo);
                     out = new ObjectOutputStream(sSocket.getOutputStream()); 
                 }
-
-               
                 if( succPortNo!=0 && out != null)
                 {
-                    System.out.println("Sending to other server" + receivedMessage);
-                    LOGGER.info("Sending to other server" + receivedMessage);
+                    System.out.println("Sending Update to other server = " + receivedMessage);
+                    LOGGER.info("Sending Update to other server = " + receivedMessage);
                     out.writeObject(receivedMessage);
                 }
                 else
@@ -96,10 +93,7 @@ public class CRMClientServerThread extends Thread {
 
                     InetAddress address = packet.getAddress();
                     int port = packet.getPort();
-
-                    //System.out.println("Sending to client" + receivedMessage);
-                    LOGGER.info("Sending to client" + receivedMessage);
-
+                    LOGGER.info("Sending Response to client = " + receivedMessage);
                     packet = new DatagramPacket(buf, buf.length, address, port);
                     socket.send(packet);
                    
@@ -118,12 +112,10 @@ public class CRMClientServerThread extends Thread {
     */
     public ServerMessage processRequest(RequestReply message)
     {
-        //System.out.println("Process Request");
         LOGGER.info("Process Request");
         String reply = null;
         ServerMessage receivedMessage = new ServerMessage();
-                
-
+        
         switch(message.getOperation().toLowerCase())
         {
             case "gb":  receivedMessage = getBalance(message);
@@ -201,7 +193,6 @@ public class CRMClientServerThread extends Thread {
         if (this.accountList.containsKey(accountNumber)) {
 
             currAccount = this.accountList.get(accountNumber);
-//            System.out.println("Account List = "+currAccount.balance);
             if (currAccount.processedTrans.contains(trans))
             {
                 receivedMessage.setBalance(currAccount.balance);
@@ -241,8 +232,9 @@ public class CRMClientServerThread extends Thread {
             receivedMessage.setOutcome(Outcome.Processed);
         }
 
-        LOGGER.info(String.valueOf(accountNumber));
-        LOGGER.info(Arrays.toString(currAccount.processedTrans.toArray()));
+
+        LOGGER.info("For account Number = " + String.valueOf(accountNumber));
+        LOGGER.info("Processed Trans = " + Arrays.toString(currAccount.processedTrans.toArray()));
         System.out.println(receivedMessage);
 
         return receivedMessage;
@@ -320,8 +312,8 @@ public class CRMClientServerThread extends Thread {
             receivedMessage.setOutcome( Outcome.InsufficientFunds);
         }
 
-        LOGGER.info(String.valueOf(accountNumber));
-        LOGGER.info(Arrays.toString(currAccount.processedTrans.toArray()));
+        LOGGER.info("For account Number = " + String.valueOf(accountNumber));
+        LOGGER.info("Processed Trans = " + Arrays.toString(currAccount.processedTrans.toArray()));
         System.out.println(receivedMessage);
 
         return receivedMessage;

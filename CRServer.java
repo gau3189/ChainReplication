@@ -18,11 +18,11 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class CRServer {
 
         private  String successor;
-        private  String predecessor;
         private  String myAddress;
         private  String masterAddress;
         private  String bankName;
@@ -30,11 +30,12 @@ public class CRServer {
         private  int udpPortNo;
         private  int tcpPortNo;
         private  int succPortNo;
-        private  int predPortNo;
         private  int masterPortNo;
         private  int chainLength;
 
-        private  String hostName;
+        private int startupTime;
+        private int delayTime;
+
         private  String configFile;
 
         private Map<String,Account> accountList;
@@ -46,7 +47,9 @@ public class CRServer {
             this.configFile = configFile;
             this.bankName = bankname;
 
-            this.accountList = new HashMap<String,Account>();                    
+            this.accountList = new ConcurrentHashMap<String,Account>();  
+            //myAddress = InetAddress.getLocalHost().getHostAddress();
+              myAddress = "127.0.0.1";                
         }
 
         public static void main(String[] args) throws IOException {
@@ -60,7 +63,12 @@ public class CRServer {
         
         int result = server.init();
 
-        fh = new FileHandler("./Logs/server@"+ server.tcpPortNo + ".log",true);  
+        if (server.tcpPortNo ==0 || server.udpPortNo == 0) {
+            System.err.println("server port must be non zero");
+            System.exit(1);
+        }
+
+        fh = new FileHandler("./Logs/server@"+ server.tcpPortNo + ".log");  
         LOGGER.addHandler(fh);
         LOGGER.setUseParentHandlers(false);
         LOGGER.setLevel(Level.FINE);
@@ -77,7 +85,7 @@ public class CRServer {
         LOGGER.config("server tcpPortNo  = "+ server.tcpPortNo);
 
         LOGGER.info("################################ </ Intial Configuration >###############################");
-        /*
+        
         System.out.println("master addr = "+ server.masterAddress);
         System.out.println("master port = "+ server.masterPortNo);
         System.out.println("My address = "+ server.myAddress);
@@ -85,7 +93,11 @@ public class CRServer {
         System.out.println("server Count = "+ server.chainLength);  
         System.out.println("server udpPortNo  = "+ server.udpPortNo);
         System.out.println("server tcpPortNo  = "+ server.tcpPortNo);
-        */
+        System.out.println("server startup time  = "+ server.startupTime);
+        System.out.println("server delay time  = "+ server.delayTime);
+
+        System.out.println("successor address = "+ server.successor);
+                
 
         String inputLine, outputLine;
         DatagramSocket clientSocket = null;
@@ -98,8 +110,8 @@ public class CRServer {
             
         try 
         { 
-                clientSocket = new DatagramSocket(server.udpPortNo);
-                new CRMClientServerThread(clientSocket, server.hostName, server.succPortNo, server.accountList, LOGGER).start();
+            clientSocket = new DatagramSocket(server.udpPortNo, InetAddress.getByName(server.myAddress));
+            new CRMClientServerThread(clientSocket, server.successor, server.succPortNo, server.accountList, LOGGER).start();
         } 
         catch (Exception e) 
         {
@@ -112,25 +124,23 @@ public class CRServer {
         ObjectOutputStream out = null;
              
         try (
-                ServerSocket serverSocket = new ServerSocket(server.tcpPortNo);
+                ServerSocket serverSocket = new ServerSocket(server.tcpPortNo,-1, InetAddress.getByName(server.myAddress));
                 Socket sSocket = serverSocket.accept();
-                PrintWriter temp_out = new PrintWriter(sSocket.getOutputStream(), true);
-                BufferedReader temp_in = new BufferedReader(new InputStreamReader(sSocket.getInputStream()));
-
+               
                 ObjectInputStream inStream = new ObjectInputStream(sSocket.getInputStream());
                 ObjectOutputStream outStream = new ObjectOutputStream(sSocket.getOutputStream());
 
             )
             { 
-                System.out.println("Created TCP port for lsitening peer server port no="+ server.tcpPortNo);
-                LOGGER.fine("Created TCP port for lsitening peer server port no="+ server.tcpPortNo);
+                System.out.println("Created TCP port for lsitening peer server port no = "+ server.tcpPortNo);
+                LOGGER.fine("Created TCP port for lsitening peer server port no = "+ server.tcpPortNo);
                 int reply = 0;
                 while ((receivedMessage = (ServerMessage) inStream.readObject()) != null)
                 {
                     byte[] buf = new byte[256];
-                    System.out.println("input Line="+ receivedMessage);
+                    System.out.println("received from predecessor = "+ receivedMessage);
                     
-                    LOGGER.fine("received from predecessor ="+ receivedMessage);
+                    LOGGER.fine("received from predecessor = "+ receivedMessage);
                     reply = server.update(receivedMessage);
 
                     if (reply == 0)
@@ -140,19 +150,19 @@ public class CRServer {
                     {
                         System.out.println("Socket creation");
                         LOGGER.fine("Socket creation");
-                        skt = new Socket(server.hostName, server.succPortNo);
+                        skt = new Socket(InetAddress.getByName(server.successor), server.succPortNo);
                         out = new ObjectOutputStream(skt.getOutputStream());
                     }
                     if( server.succPortNo!=0 && out != null)
                     {
-                        System.out.println("Sending to other server" + receivedMessage);
-                        LOGGER.fine("Sending to successor server" + receivedMessage + "at port" + server.succPortNo);
+                        System.out.println("Sending to other server   " + receivedMessage);
+                        LOGGER.fine("Sending to successor server =  " + receivedMessage + " at port =   " + server.succPortNo);
                         out.writeObject(receivedMessage);
                     }
                     else
                     {
-                        System.out.println("Sending client = "+ receivedMessage);
-                        LOGGER.fine("Sending client = "+ receivedMessage);
+                        System.out.println("Sending Response to client = "+ receivedMessage);
+                        LOGGER.fine("Sending Response to client = "+ receivedMessage);
 
                         response.setReqID(receivedMessage.getReqID());
                         response.setBalance(receivedMessage.getBalance());
@@ -169,6 +179,7 @@ public class CRServer {
                         
                         InetAddress address =  InetAddress.getByName(receivedMessage.getHostAddress());
                         int port = receivedMessage.getPortNumber();
+
                         DatagramPacket packet = new DatagramPacket(buf, buf.length, address, port);
                         clientSocket.send(packet);
                     }
@@ -204,21 +215,17 @@ public class CRServer {
     */
     public int init()
     {   
-        
+        LOGGER.fine("In Init ()");
         String temp = null;
         Boolean isCorrectBank = false;
         Path path = Paths.get(configFile);
         
         try
         {
-            myAddress = InetAddress.getLocalHost().getHostAddress();
-            hostName = InetAddress.getLocalHost().getHostName();
-
             System.out.println("myAddress : " + myAddress);
-            System.out.println("hostName : " + hostName);
-
+            
             BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8);
-            String line = null, tcp_temp = "TCP_PORT_NUMBER_", udp_temp = "UDP_PORT_NUMBER_";
+            String line = null, tcp_temp = "TCP_PORT_NUMBER_", udp_temp = "UDP_PORT_NUMBER_", succAddr = "HOST_ADDRESS_";
             int count = 0;
             int temp_num = 0;
             int temp_succ = 0;
@@ -228,10 +235,10 @@ public class CRServer {
             while ((line = reader.readLine()) != null ) {
                 if(!line.isEmpty()) 
                 {
-                    if (count == 7)
+                    if (count == 10)
                         break;
 
-                    if (line.trim().equals("</Bank1>") || line.trim().equals("</Bank1>") || line.trim().equals("</Bank1>"))
+                    if (line.trim().toLowerCase().contains("</bank"))
                         isCorrectBank = false;
 
                     String []val = line.split(":");
@@ -259,6 +266,7 @@ public class CRServer {
                         {   
                             isCorrectBank = true;
                             count++;
+                            
                         }
 
                         if (isCorrectBank && tcpPortNo == 0 && val[1].trim().equals(myAddress))
@@ -268,11 +276,10 @@ public class CRServer {
 
                         if (isCorrectBank && val[0].trim().equals(tcp_temp+temp_num))
                         {
-                            
                             tcpPortNo = Integer.parseInt(val[1].trim());
-                             try 
+                            try 
                             {
-                                ServerSocket serverSocket = new ServerSocket(tcpPortNo);
+                                ServerSocket serverSocket = new ServerSocket(tcpPortNo,-1, InetAddress.getByName(myAddress));
                                 serverSocket.close();
 
                                 temp_succ = ++temp_num;
@@ -289,14 +296,32 @@ public class CRServer {
 
                         if (isCorrectBank && tcpPortNo!=0 && val[0].trim().equals(udp_temp+temp_num))
                         {
-                                udpPortNo = Integer.parseInt(val[1].trim());
-                                count++;
+                            udpPortNo = Integer.parseInt(val[1].trim());
+                            count++;
                         }
 
                         if (isCorrectBank && tcpPortNo!=0  && val[0].trim().equals(tcp_temp+temp_succ))
                         {
-                                succPortNo = Integer.parseInt(val[1].trim());
-                                count++;
+                            succPortNo = Integer.parseInt(val[1].trim());
+                            count++;
+                        }
+
+                        if (isCorrectBank && tcpPortNo!=0  && val[0].trim().equals(succAddr+temp_succ))
+                        {
+                            successor = val[1].trim();
+                            count++;
+                        }
+
+                        if (isCorrectBank && tcpPortNo!=0  && val[0].trim().equals("STARTUP_TIME"))
+                        {
+                            startupTime = Integer.parseInt(val[1].trim());
+                            count++;
+                        }
+
+                        if (isCorrectBank && tcpPortNo!=0 && val[0].trim().equals("LIFE_TIME"))
+                        {
+                            delayTime = Integer.parseInt(val[1].trim());
+                            count++;
                         }
    
                     } 
@@ -310,6 +335,8 @@ public class CRServer {
             LOGGER.severe("INIT Exception = " + e);
             return 0;
         }
+
+    LOGGER.fine("Init() Done");    
         
     return 1;
     }
@@ -333,7 +360,7 @@ public class CRServer {
             default :   reply = 0; 
                         break;
         }
-
+        LOGGER.fine("Update Finished");
         return reply;
     }
 
@@ -345,6 +372,7 @@ public class CRServer {
     public int deposit(ServerMessage message)
     {
         System.out.println("In Deposit");
+        LOGGER.fine("In Deposit");
         Account currAccount = null;
         String trans = "DP," + message.getReqID() + "," + message.getAmount();
         String reply = null;
@@ -371,8 +399,8 @@ public class CRServer {
 
        // System.out.println(reply);
        // LOGGER.info(reply);
-        LOGGER.info(String.valueOf(message.getAccountNumber()));
-        LOGGER.info(Arrays.toString(currAccount.processedTrans.toArray()));
+        LOGGER.info("For account Number = " + String.valueOf(message.getAccountNumber()));
+        LOGGER.info("Processed Trans = " + Arrays.toString(currAccount.processedTrans.toArray()));
         return 1;
     }
 
@@ -409,8 +437,8 @@ public class CRServer {
         }
 
         //System.out.println(reply);
-        LOGGER.info(String.valueOf(message.getAccountNumber()));
-        LOGGER.info(Arrays.toString(currAccount.processedTrans.toArray()));
+        LOGGER.info("For account Number = " + String.valueOf(message.getAccountNumber()));
+        LOGGER.info("Processed Trans = " + Arrays.toString(currAccount.processedTrans.toArray()));
         
         //LOGGER.info(reply);
         return 1;
@@ -437,7 +465,6 @@ class Account
      public String toString() {
         return " <balance = " + balance;
     }
-
 
 }
 

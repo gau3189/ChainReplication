@@ -78,11 +78,15 @@ public class RequestReply implements Serializable {
     }
     public String toString() {
      //  return "Id = " + getId() + " ; Name = " + getName();
-    	return " <operation = " + operation + ",reqID = "+ reqID +  ",outcome = " + outcome + ",balance=" + balance + ">";
+    	return " <operation = " + operation + ",reqID = "+ reqID + ",amount=" + amount +  ",outcome = " + outcome + ",balance=" + balance + ">";
     }
 
     public String showReply() {
      //  return "Id = " + getId() + " ; Name = " + getName();
     	return " <reqID = "+ reqID +  ",outcome = " + outcome + ",balance=" + balance + ",accountNumber=" + accountNumber +  ">";
+    }
+    public String showRequest() {
+     //  return "Id = " + getId() + " ; Name = " + getName();
+        return " <reqID = "+ reqID +  ",operation = " + operation + ",amount=" + amount + ",accountNumber=" + accountNumber +  ">";
     }
 }

@@ -28,13 +28,14 @@ public class CClient {
 
     private int clientCount;
     private int clientWaitTime;
+    private int clientResend;
     private int chainLength;
 
-    private String clientRequestInfo;
     private String bankName;
     private String configFile;
 
     private List<String> requests;
+    private Map<String, List<String>> requestList;
     private final static Logger LOGGER = Logger.getLogger(CClient.class.getName());
     private static FileHandler fh;
 
@@ -43,6 +44,7 @@ public class CClient {
         this.bankName = bankname;
         this.configFile = configFile;
         this.requests = new ArrayList<String>();
+        this.requestList = new HashMap<String,List<String>>();
     }
 
     public static void main(String[] args) throws IOException {
@@ -59,7 +61,7 @@ public class CClient {
             {
                 int result = client.init();
                 
-                fh = new FileHandler("./Logs/client@"+ client.bankName + ".log",true);  
+                fh = new FileHandler("./Logs/client@"+ client.bankName + ".log");  
                 LOGGER.addHandler(fh);
                 LOGGER.setUseParentHandlers(false);
                 LOGGER.setLevel(Level.FINE);
@@ -75,33 +77,55 @@ public class CClient {
                 LOGGER.config("tail address = "+ client.tailAddress);  
                 LOGGER.config("tail port = "+ client.tailPortNo);
                 LOGGER.config("client Count = "+ client.clientCount);  
-                LOGGER.config("client Request Info  = "+ client.clientRequestInfo);
                 LOGGER.config("client Wait Time  = "+ client.clientWaitTime);
-
+                LOGGER.config("client Resends   = "+ client.clientResend);
+                LOGGER.config("client requests  = "+ client.requests);
 
                 LOGGER.info("################################ </ Intial Configuration >###############################");
                 
 
-                System.out.println("master addr = "+ client.masterAddress);
-                System.out.println("master port = "+ client.masterPortNo);
-                System.out.println("head address = "+ client.headAddress);
-                System.out.println("head port = "+ client.headPortNo);
+               /* Debugging Messages 
+                    System.out.println("master addr = "+ client.masterAddress);
+                    System.out.println("master port = "+ client.masterPortNo);
+                    System.out.println("head address = "+ client.headAddress);
+                    System.out.println("head port = "+ client.headPortNo);
 
-                System.out.println("tail address = "+ client.tailAddress);
-                System.out.println("tail port = "+ client.tailPortNo);
-                System.out.println("client Count = "+ client.clientCount);  
-                System.out.println("client Request Info  = "+ client.clientRequestInfo);
-                System.out.println("client Wait Time  = "+ client.clientWaitTime);
+                    System.out.println("tail address = "+ client.tailAddress);
+                    System.out.println("tail port = "+ client.tailPortNo);
+                    System.out.println("client Count = "+ client.clientCount);  
+                    System.out.println("client Request Info  = "+ client.clientRequestInfo);
+                    System.out.println("client Wait Time  = "+ client.clientWaitTime);
+                    System.out.println("client Resends   = "+ client.clientResend);
+                    System.out.println("requests  = "+ client.requests);
+                    System.out.println("size="+ client.requestList.size());
+                    
+                */
 
-                System.out.println("requests  = "+ client.requests);
+                System.out.println("CCLient thread ID:"+Thread.currentThread().getId());
+                if(client.requestList.size() == 1)
+                {
+                    System.out.println("list="+ client.requestList.get("REQUEST_INFO"));
 
-               // System.exit(1);
-                
-                for (int i = 0; i < client.clientCount; i++)
-                    new CClientThread(client.masterAddress,client.headAddress,client.tailAddress,
+                    for (int i = 0; i < client.clientCount; i++)
+                        new CClientThread(client.masterAddress,client.headAddress,client.tailAddress,
                                         client.masterPortNo,client.headPortNo,client.tailPortNo,
-                                        client.requests,client.bankName,
-                                        client.clientWaitTime, i, LOGGER).start();
+                                        client.requestList.get("REQUEST_INFO"),client.bankName,client.clientResend,
+                                        client.clientWaitTime, i, LOGGER,true).start();
+                }
+                else
+                {
+                     System.out.println("list="+ client.requestList.get("REQUEST_6"));
+                    for (int i = 1; i <= client.clientCount; i++)
+                    {
+                        String key = "REQUEST_" + i;
+                        new CClientThread(client.masterAddress,client.headAddress,client.tailAddress,
+                                        client.masterPortNo,client.headPortNo,client.tailPortNo,
+                                        client.requestList.get(key),client.bankName,client.clientResend,
+                                        client.clientWaitTime, i, LOGGER,false).start();
+                    }
+                }
+                //System.exit(1);
+                
                  
             }
             catch(Exception e)
@@ -163,11 +187,11 @@ public class CClient {
                         if (isCorrectBank && val[0].trim().equals("LENGTH"))
                             chainLength= Integer.parseInt(val[1].trim());
                         
-                        if (isCorrectBank && val[0].trim().equals("REQUEST_INFO") )
-                            clientRequestInfo = val[1].trim();
-                        
-                        if (isCorrectBank && val[0].trim().equals("CLIENT_RESEND") )
+                        if (isCorrectBank && val[0].trim().equals("CLIENT_WAIT_TIME") )
                             clientWaitTime = Integer.parseInt(val[1].trim());
+
+                        if (isCorrectBank && val[0].trim().equals("CLIENT_RESEND") )
+                            clientResend = Integer.parseInt(val[1].trim());
                         
                         if (isCorrectBank && val[0].trim().equals("HOST_ADDRESS_1") )
                             headAddress = val[1].trim();
@@ -184,7 +208,20 @@ public class CClient {
                          
 
                         if (isCorrectBank && val[0].trim().contains("REQUEST_"))
+                        {
+                            requests = new ArrayList<String>();
                             requests.add(val[1].trim());
+                            if (requestList.containsKey(val[0].trim()))
+                            {
+                                (requestList.get(val[0].trim())).add(val[1].trim());
+                            }
+                            else
+                            {
+                                requestList.put(val[0].trim(),requests);
+                            }
+                            
+                          
+                        }
                         
                     } 
                 }    
