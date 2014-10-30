@@ -304,8 +304,8 @@ public class ClientThread extends Thread {
             
             LOGGER.info("CLIENT ID :: " + this.id + " received message = " + response.showReply());
 
-            Thread.sleep(this.waitTime);
-
+            //Thread.sleep(this.waitTime);
+            Thread.sleep(10000);
         } 
         catch (UnknownHostException e) {
                 System.err.println("Don't know about host ");

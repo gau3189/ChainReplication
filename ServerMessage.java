@@ -1,3 +1,15 @@
+/*
+ *  PHASE 2: NON-FAULT-TOLERANT SERVICE
+ *  TEAM MEMBERS: 
+ * 
+ *  GAUTHAM REDDY KUNTA ID: 109596312
+ *  NAFEES AHMED ABDUL ID: 109595182
+ *
+ *
+ *  ServerMessage.java
+ *
+ */
+
 import java.io.Serializable;
 
 public class ServerMessage implements Serializable {
@@ -11,6 +23,15 @@ public class ServerMessage implements Serializable {
 	private float balance;
 	private float amount;
 	private Outcome outcome;
+    private String message;
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+           this.message = message;
+    }
 
     public String getReqID() {
         return reqID;

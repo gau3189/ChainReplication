@@ -107,6 +107,7 @@ public class CRClientServerThread extends Thread {
                     socket.send(packet);
                    
                 }   
+                Thread.sleep(5000);
             }
         }
         catch (Exception e) {
@@ -214,29 +215,40 @@ public class CRClientServerThread extends Thread {
         if (this.accountList.containsKey(accountNumber)) {
 
             currAccount = this.accountList.get(accountNumber);
-            if (currAccount.processedTrans.contains(trans))
-            {
-                receivedMessage.setBalance(currAccount.balance);
-                receivedMessage.setOutcome(Outcome.Processed); 
-                
-                isProcessed = true;
-            }
-            else
-            {
-                for (String s : currAccount.processedTrans)
-                    if (s.contains(reqID))
-                    {
-                        receivedMessage.setBalance(currAccount.balance);
-                        receivedMessage.setOutcome(Outcome.InconsistentWithHistory);
+            LOGGER.info("Before For account Number = " + String.valueOf(accountNumber));
+            LOGGER.info("Before Processed Trans = " + Arrays.toString(currAccount.processedTrans.toArray()));
+            LOGGER.info("Before Current Trans = " + Arrays.toString(currAccount.currentTrans.toArray()));
+            
+                if (currAccount.processedTrans.contains(trans))
+                {
+                    receivedMessage.setBalance(currAccount.balance);
+                    receivedMessage.setOutcome(Outcome.Processed); 
+                    
+                    isProcessed = true;
+                }
+                else
+                {
+                        if (currAccount.processedTrans!=null)
+                        {
+                           
+                            LOGGER.info("Checking Processed Trans = " );
+                            for (String s1 : currAccount.processedTrans)
+                                if (s1.contains(reqID))
+                                {
+                                    receivedMessage.setBalance(currAccount.balance);
+                                    receivedMessage.setOutcome(Outcome.InconsistentWithHistory);
 
-                        isProcessed = true;
-                        break;
-                    }
-            }
+                                    isProcessed = true;
+                                    break;
+                                }
+                        }
+                }
+               
             if (!isProcessed)
             {
                 currAccount.balance += amount;
-                currAccount.processedTrans.add(trans);
+                //currAccount.processedTrans.add(trans);
+                currAccount.currentTrans.add(trans);
                 this.accountList.put(accountNumber,currAccount);
                 receivedMessage.setBalance(currAccount.balance);
                 receivedMessage.setOutcome(Outcome.Processed);
@@ -246,7 +258,8 @@ public class CRClientServerThread extends Thread {
             currAccount = new Account();
             currAccount.balance += amount;
             
-            currAccount.processedTrans.add(trans);
+            //currAccount.processedTrans.add(trans);
+            currAccount.currentTrans.add(trans);
             this.accountList.put(accountNumber,currAccount);
         
             receivedMessage.setBalance(currAccount.balance);
@@ -254,8 +267,8 @@ public class CRClientServerThread extends Thread {
         }
 
 
-        LOGGER.info("For account Number = " + String.valueOf(accountNumber));
-        LOGGER.info("Processed Trans = " + Arrays.toString(currAccount.processedTrans.toArray()));
+        LOGGER.info("After For account Number = " + String.valueOf(accountNumber));
+        LOGGER.info("After Processed Trans = " + Arrays.toString(currAccount.processedTrans.toArray()));
         System.out.println(receivedMessage);
 
         return receivedMessage;
@@ -309,15 +322,18 @@ public class CRClientServerThread extends Thread {
             }
             else
             {
-                for (String s : currAccount.processedTrans)
-                { 
-                    if (s.contains(reqID))
-                    {
-                        isProcessed = true;
+                if (currAccount.processedTrans!=null)
+                {
+                    for (String s : currAccount.currentTrans)
+                    { 
+                        if (s.contains(reqID))
+                        {
+                            isProcessed = true;
 
-                        receivedMessage.setBalance(currAccount.balance);
-                        receivedMessage.setOutcome(Outcome.InconsistentWithHistory);
-                        break;
+                            receivedMessage.setBalance(currAccount.balance);
+                            receivedMessage.setOutcome(Outcome.InconsistentWithHistory);
+                            break;
+                        }
                     }
                 }
             }
@@ -326,8 +342,8 @@ public class CRClientServerThread extends Thread {
                 if (currAccount.balance >= amount)
                 {
                     currAccount.balance -= amount;
-                    currAccount.processedTrans.add(trans);
-        
+                    //currAccount.processedTrans.add(trans);
+                    currAccount.currentTrans.add(trans);
                     this.accountList.put(accountNumber,currAccount);
                     receivedMessage.setBalance(currAccount.balance);
                     receivedMessage.setOutcome(Outcome.Processed);

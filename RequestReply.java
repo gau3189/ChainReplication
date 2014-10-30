@@ -1,3 +1,15 @@
+/*
+ *  PHASE 2: NON-FAULT-TOLERANT SERVICE
+ *  TEAM MEMBERS: 
+ * 
+ *  GAUTHAM REDDY KUNTA ID: 109596312
+ *  NAFEES AHMED ABDUL ID: 109595182
+ *
+ *
+ *  RequestReply.java
+ *
+ */
+
 import java.io.Serializable;
 
 public class RequestReply implements Serializable {
@@ -6,14 +18,12 @@ public class RequestReply implements Serializable {
     											 
     private String reqID;
 	private String bankName;
-
     private String operation;
 	private String accountNumber;
-	
-	private float balance;
-	private float amount;
+	private float  balance;
+	private float  amount;
 	private Outcome outcome;
-    
+
     public String getReqID() {
         return reqID;
     }
@@ -83,10 +93,10 @@ public class RequestReply implements Serializable {
 
     public String showReply() {
      //  return "Id = " + getId() + " ; Name = " + getName();
-    	return " <reqID = "+ reqID +  ",outcome = " + outcome + ",balance=" + balance + ",accountNumber=" + accountNumber +  ">";
+    	return " <operation = " + operation + ", outcome = " + outcome + ", reqID = "+ reqID +  ", balance = " + balance + ", accountNumber = " + accountNumber +  ">";
     }
     public String showRequest() {
      //  return "Id = " + getId() + " ; Name = " + getName();
-        return " <reqID = "+ reqID +  ",operation = " + operation + ",amount=" + amount + ",accountNumber=" + accountNumber +  ">";
+        return "< Operation = " + operation + ", reqID = "+ reqID  + " , accountNumber= " + accountNumber + " ,amount = " + amount + ">";
     }
 }
