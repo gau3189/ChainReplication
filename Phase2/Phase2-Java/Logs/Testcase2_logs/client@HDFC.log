@@ -1,0 +1,100 @@
+Oct 13, 2014 8:55:14 PM CRClient main
+INFO: ################################ < Intial Configuration > ###############################
+Oct 13, 2014 8:55:14 PM CRClient main
+CONFIG: master addr = 127.0.0.1
+Oct 13, 2014 8:55:14 PM CRClient main
+CONFIG: master port = 6665
+Oct 13, 2014 8:55:14 PM CRClient main
+CONFIG: head address = 127.0.0.1
+Oct 13, 2014 8:55:14 PM CRClient main
+CONFIG: head port = 4448
+Oct 13, 2014 8:55:14 PM CRClient main
+CONFIG: tail address = 127.0.0.1
+Oct 13, 2014 8:55:14 PM CRClient main
+CONFIG: tail port = 4451
+Oct 13, 2014 8:55:14 PM CRClient main
+CONFIG: client Count = 4
+Oct 13, 2014 8:55:14 PM CRClient main
+CONFIG: client Wait Time  = 10000
+Oct 13, 2014 8:55:14 PM CRClient main
+CONFIG: client Resends   = 2
+Oct 13, 2014 8:55:14 PM CRClient main
+CONFIG: client requests  = {REQUEST_3=[GB, HDFC.3.1, 10001, DP, HDFC.3.1, 10001, 600, WD, HDFC.3.2, 10002, 200], REQUEST_2=[DP, HDFC.2.1, 10003, 300, DP, HDFC.2.1, 10004, 600, GB, HDFC.2.3, 10004, GB, HDFC.2.4, 10003], REQUEST_1=[GB, HDFC.1.1, 10001, DP, HDFC.1.1, 10001, 600, WD, HDFC.1.2, 10002, 200, GB, HDFC.1.3, 10001], REQUEST_4=[DP, HDFC.4.1, 10003, 300, DP, HDFC.4.1, 10004, 600, GB, HDFC.4.3, 10004, GB, HDFC.4.4, 10003]}
+Oct 13, 2014 8:55:14 PM CRClient main
+INFO: ################################ </ Intial Configuration >###############################
+Oct 13, 2014 8:55:14 PM ClientThread run
+CONFIG: Client ID :: 3 UDP Socket PortNo ::  58002
+Oct 13, 2014 8:55:14 PM ClientThread run
+CONFIG: Client ID :: 4 UDP Socket PortNo ::  14494
+Oct 13, 2014 8:55:14 PM ClientThread run
+CONFIG: Client ID :: 1 UDP Socket PortNo ::  17999
+Oct 13, 2014 8:55:14 PM ClientThread run
+CONFIG: Client ID :: 2 UDP Socket PortNo ::  42986
+Oct 13, 2014 8:55:14 PM ClientThread run
+INFO: CLIENT ID :: 1 message = Serving each of the itemized request read from the configuration file
+Oct 13, 2014 8:55:14 PM ClientThread run
+INFO: CLIENT ID :: 4 message = Serving each of the itemized request read from the configuration file
+Oct 13, 2014 8:55:14 PM ClientThread run
+INFO: CLIENT ID :: 3 message = Serving each of the itemized request read from the configuration file
+Oct 13, 2014 8:55:14 PM ClientThread sendMessage
+INFO: CLIENT ID :: 4 Sending Request to server = < Operation = DP, reqID = HDFC.4.1 , accountNumber= 10003 ,amount = 300.0> at 4448
+Oct 13, 2014 8:55:14 PM ClientThread sendMessage
+INFO: CLIENT ID :: 1 Sending Request to server = < Operation = GB, reqID = HDFC.1.1 , accountNumber= 10001 ,amount = 0.0> at 4451
+Oct 13, 2014 8:55:14 PM ClientThread run
+INFO: CLIENT ID :: 2 message = Serving each of the itemized request read from the configuration file
+Oct 13, 2014 8:55:14 PM ClientThread sendMessage
+INFO: CLIENT ID :: 3 Sending Request to server = < Operation = GB, reqID = HDFC.3.1 , accountNumber= 10001 ,amount = 0.0> at 4451
+Oct 13, 2014 8:55:14 PM ClientThread sendMessage
+INFO: CLIENT ID :: 2 Sending Request to server = < Operation = DP, reqID = HDFC.2.1 , accountNumber= 10003 ,amount = 300.0> at 4448
+Oct 13, 2014 8:55:14 PM ClientThread sendMessage
+INFO: CLIENT ID :: 3 received message =  <operation = GB, outcome = Processed, reqID = HDFC.3.1, balance = 0.0, accountNumber = 10001>
+Oct 13, 2014 8:55:14 PM ClientThread sendMessage
+INFO: CLIENT ID :: 1 received message =  <operation = GB, outcome = Processed, reqID = HDFC.1.1, balance = 0.0, accountNumber = 10001>
+Oct 13, 2014 8:55:14 PM ClientThread sendMessage
+INFO: CLIENT ID :: 4 received message =  <operation = DP, outcome = Processed, reqID = HDFC.4.1, balance = 300.0, accountNumber = 10003>
+Oct 13, 2014 8:55:14 PM ClientThread sendMessage
+INFO: CLIENT ID :: 2 received message =  <operation = DP, outcome = Processed, reqID = HDFC.2.1, balance = 600.0, accountNumber = 10003>
+Oct 13, 2014 8:55:24 PM ClientThread sendMessage
+INFO: CLIENT ID :: 3 Sending Request to server = < Operation = DP, reqID = HDFC.3.1 , accountNumber= 10001 ,amount = 600.0> at 4448
+Oct 13, 2014 8:55:24 PM ClientThread sendMessage
+INFO: CLIENT ID :: 1 Sending Request to server = < Operation = DP, reqID = HDFC.1.1 , accountNumber= 10001 ,amount = 600.0> at 4448
+Oct 13, 2014 8:55:24 PM ClientThread sendMessage
+INFO: CLIENT ID :: 3 received message =  <operation = DP, outcome = Processed, reqID = HDFC.3.1, balance = 600.0, accountNumber = 10001>
+Oct 13, 2014 8:55:24 PM ClientThread sendMessage
+INFO: CLIENT ID :: 1 received message =  <operation = DP, outcome = Processed, reqID = HDFC.1.1, balance = 1200.0, accountNumber = 10001>
+Oct 13, 2014 8:55:24 PM ClientThread sendMessage
+INFO: CLIENT ID :: 4 Sending Request to server = < Operation = DP, reqID = HDFC.4.1 , accountNumber= 10004 ,amount = 600.0> at 4448
+Oct 13, 2014 8:55:24 PM ClientThread sendMessage
+INFO: CLIENT ID :: 2 Sending Request to server = < Operation = DP, reqID = HDFC.2.1 , accountNumber= 10004 ,amount = 600.0> at 4448
+Oct 13, 2014 8:55:24 PM ClientThread sendMessage
+INFO: CLIENT ID :: 4 received message =  <operation = DP, outcome = Processed, reqID = HDFC.4.1, balance = 600.0, accountNumber = 10004>
+Oct 13, 2014 8:55:24 PM ClientThread sendMessage
+INFO: CLIENT ID :: 2 received message =  <operation = DP, outcome = Processed, reqID = HDFC.2.1, balance = 1200.0, accountNumber = 10004>
+Oct 13, 2014 8:55:34 PM ClientThread sendMessage
+INFO: CLIENT ID :: 3 Sending Request to server = < Operation = WD, reqID = HDFC.3.2 , accountNumber= 10002 ,amount = 200.0> at 4448
+Oct 13, 2014 8:55:34 PM ClientThread sendMessage
+INFO: CLIENT ID :: 1 Sending Request to server = < Operation = WD, reqID = HDFC.1.2 , accountNumber= 10002 ,amount = 200.0> at 4448
+Oct 13, 2014 8:55:34 PM ClientThread sendMessage
+INFO: CLIENT ID :: 3 received message =  <operation = WD, outcome = InsufficientFunds, reqID = HDFC.3.2, balance = 0.0, accountNumber = 10002>
+Oct 13, 2014 8:55:34 PM ClientThread sendMessage
+INFO: CLIENT ID :: 1 received message =  <operation = WD, outcome = InsufficientFunds, reqID = HDFC.1.2, balance = 0.0, accountNumber = 10002>
+Oct 13, 2014 8:55:34 PM ClientThread sendMessage
+INFO: CLIENT ID :: 4 Sending Request to server = < Operation = GB, reqID = HDFC.4.3 , accountNumber= 10004 ,amount = 0.0> at 4451
+Oct 13, 2014 8:55:34 PM ClientThread sendMessage
+INFO: CLIENT ID :: 2 Sending Request to server = < Operation = GB, reqID = HDFC.2.3 , accountNumber= 10004 ,amount = 0.0> at 4451
+Oct 13, 2014 8:55:34 PM ClientThread sendMessage
+INFO: CLIENT ID :: 4 received message =  <operation = GB, outcome = Processed, reqID = HDFC.4.3, balance = 1200.0, accountNumber = 10004>
+Oct 13, 2014 8:55:34 PM ClientThread sendMessage
+INFO: CLIENT ID :: 2 received message =  <operation = GB, outcome = Processed, reqID = HDFC.2.3, balance = 1200.0, accountNumber = 10004>
+Oct 13, 2014 8:55:44 PM ClientThread sendMessage
+INFO: CLIENT ID :: 1 Sending Request to server = < Operation = GB, reqID = HDFC.1.3 , accountNumber= 10001 ,amount = 0.0> at 4451
+Oct 13, 2014 8:55:44 PM ClientThread sendMessage
+INFO: CLIENT ID :: 1 received message =  <operation = GB, outcome = Processed, reqID = HDFC.1.3, balance = 1200.0, accountNumber = 10001>
+Oct 13, 2014 8:55:44 PM ClientThread sendMessage
+INFO: CLIENT ID :: 4 Sending Request to server = < Operation = GB, reqID = HDFC.4.4 , accountNumber= 10003 ,amount = 0.0> at 4451
+Oct 13, 2014 8:55:44 PM ClientThread sendMessage
+INFO: CLIENT ID :: 2 Sending Request to server = < Operation = GB, reqID = HDFC.2.4 , accountNumber= 10003 ,amount = 0.0> at 4451
+Oct 13, 2014 8:55:44 PM ClientThread sendMessage
+INFO: CLIENT ID :: 4 received message =  <operation = GB, outcome = Processed, reqID = HDFC.4.4, balance = 600.0, accountNumber = 10003>
+Oct 13, 2014 8:55:44 PM ClientThread sendMessage
+INFO: CLIENT ID :: 2 received message =  <operation = GB, outcome = Processed, reqID = HDFC.2.4, balance = 600.0, accountNumber = 10003>

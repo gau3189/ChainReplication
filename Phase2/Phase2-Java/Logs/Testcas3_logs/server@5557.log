@@ -1,0 +1,88 @@
+Oct 13, 2014 9:04:42 PM CRServer main
+INFO: ################################ < Intial Configuration > ###############################
+Oct 13, 2014 9:04:42 PM CRServer main
+CONFIG: master addr = 127.0.0.1
+Oct 13, 2014 9:04:42 PM CRServer main
+CONFIG: master port = 6666
+Oct 13, 2014 9:04:42 PM CRServer main
+CONFIG: My address = 127.0.0.1
+Oct 13, 2014 9:04:42 PM CRServer main
+CONFIG: successor port = 0
+Oct 13, 2014 9:04:42 PM CRServer main
+CONFIG: server Count = 3
+Oct 13, 2014 9:04:42 PM CRServer main
+CONFIG: server udpPortNo  = 4446
+Oct 13, 2014 9:04:42 PM CRServer main
+CONFIG: server tcpPortNo  = 5557
+Oct 13, 2014 9:04:42 PM CRServer main
+CONFIG: successor address = null
+Oct 13, 2014 9:04:42 PM CRServer main
+CONFIG: server startup time  = 12
+Oct 13, 2014 9:04:42 PM CRServer main
+CONFIG: server delay time  = 6
+Oct 13, 2014 9:04:42 PM CRServer main
+INFO: ################################ </ Intial Configuration >###############################
+Oct 13, 2014 9:04:42 PM CRServer main
+INFO: Account List at StartUp = {}
+Oct 13, 2014 9:04:42 PM CRClientServerThread run
+INFO: IN CRClientServerThread WAITING FOR CLIENT
+Oct 13, 2014 9:04:49 PM CRClientServerThread run
+INFO: Recieved Request from client = < Operation = GB, reqID = CITI.1.1 , accountNumber= 10001 ,amount = 0.0>
+Oct 13, 2014 9:04:49 PM CRClientServerThread processRequest
+INFO: Process Request
+Oct 13, 2014 9:04:49 PM CRClientServerThread run
+INFO: Sending Response to client = operation = GB ; reqID = CITI.1.1 ; balance = 0.0 ; outcome = Processed
+Oct 13, 2014 9:04:49 PM CRServer main
+FINE: Created TCP port for lsitening peer server port no = 5557
+Oct 13, 2014 9:04:49 PM CRServer main
+FINE: Received from predecessor = operation = WD ; reqID = CITI.2.1 ; balance = 0.0 ; outcome = InsufficientFunds
+Oct 13, 2014 9:04:49 PM CRServer update
+FINE: In Update
+Oct 13, 2014 9:04:49 PM CRServer withdraw
+INFO: For account Number = 10003
+Oct 13, 2014 9:04:49 PM CRServer withdraw
+INFO: Processed Trans = [DP,CITI.2.1,300.0]
+Oct 13, 2014 9:04:49 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 9:04:49 PM CRServer main
+FINE: Sending Response to client =  <operation = WD, outcome = InsufficientFunds, reqID = CITI.2.1, balance = 0.0, accountNumber = 10003>
+Oct 13, 2014 9:04:54 PM CRServer main
+FINE: Received from predecessor = operation = DP ; reqID = CITI.1.1 ; balance = 600.0 ; outcome = Processed
+Oct 13, 2014 9:04:54 PM CRServer update
+FINE: In Update
+Oct 13, 2014 9:04:54 PM CRServer deposit
+FINE: In Deposit
+Oct 13, 2014 9:04:54 PM CRServer deposit
+INFO: For account Number = 10001
+Oct 13, 2014 9:04:54 PM CRServer deposit
+INFO: Processed Trans = [DP,CITI.1.1,600.0]
+Oct 13, 2014 9:04:54 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 9:04:54 PM CRServer main
+FINE: Sending Response to client =  <operation = DP, outcome = Processed, reqID = CITI.1.1, balance = 600.0, accountNumber = 10001>
+Oct 13, 2014 9:04:54 PM CRClientServerThread run
+INFO: Recieved Request from client = < Operation = GB, reqID = CITI.2.3 , accountNumber= 10003 ,amount = 0.0>
+Oct 13, 2014 9:04:54 PM CRClientServerThread processRequest
+INFO: Process Request
+Oct 13, 2014 9:04:54 PM CRClientServerThread run
+INFO: Sending Response to client = operation = GB ; reqID = CITI.2.3 ; balance = 0.0 ; outcome = Processed
+Oct 13, 2014 9:04:59 PM CRServer main
+FINE: Received from predecessor = operation = WD ; reqID = CITI.1.2 ; balance = 600.0 ; outcome = InsufficientFunds
+Oct 13, 2014 9:04:59 PM CRServer update
+FINE: In Update
+Oct 13, 2014 9:04:59 PM CRServer withdraw
+INFO: For account Number = 10001
+Oct 13, 2014 9:04:59 PM CRServer withdraw
+INFO: Processed Trans = [DP,CITI.1.1,600.0]
+Oct 13, 2014 9:04:59 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 9:04:59 PM CRServer main
+FINE: Sending Response to client =  <operation = WD, outcome = InsufficientFunds, reqID = CITI.1.2, balance = 600.0, accountNumber = 10001>
+Oct 13, 2014 9:05:04 PM CRClientServerThread run
+INFO: Recieved Request from client = < Operation = GB, reqID = CITI.1.3 , accountNumber= 10001 ,amount = 0.0>
+Oct 13, 2014 9:05:04 PM CRClientServerThread processRequest
+INFO: Process Request
+Oct 13, 2014 9:05:04 PM CRClientServerThread run
+INFO: Sending Response to client = operation = GB ; reqID = CITI.1.3 ; balance = 600.0 ; outcome = Processed
+Oct 13, 2014 9:12:23 PM CRServer main
+SEVERE: Exception Occured java.io.EOFException

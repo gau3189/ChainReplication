@@ -1,0 +1,21 @@
+2014-10-13 23:10:50,812 - Server-2 - Server Id:30489
+2014-10-13 23:10:50,814 - Server-2 - Belongs to:TFCU
+2014-10-13 23:10:50,815 - Server-2 - Predecessor id:('nafeess-MacBook-Air.local', 31809)
+2014-10-13 23:10:50,817 - Server-2 - Sucessor id:None
+2014-10-13 23:10:50,817 - Server-2 - I am the Tail !!
+2014-10-13 23:10:50,818 - Server-2 - Life Time: Terminates after 3 send messages
+2014-10-13 23:10:50,841 - Server-2 - Req_id:CITI.1.223 Account:10001 Amount:None Operation:getbalance
+2014-10-13 23:10:50,841 - Server-2 - Account Not Exists!
+2014-10-13 23:10:50,842 - Server-2 - Creating Account!
+2014-10-13 23:10:50,843 - Server-2 - Received no of messages:1
+2014-10-13 23:10:50,843 - Server-2 - Sent no of messages:1
+2014-10-13 23:10:50,844 - Server-2 - before getbalance operation: Account No:10001 Current Balance:0
+2014-10-13 23:10:50,845 - Server-2 - Account Exists!
+2014-10-13 23:10:50,847 - Server-2 - send reply to client:('nafeess-MacBook-Air.local', 14126)
+2014-10-13 23:10:50,850 - Server-2 - Req_id:CITI.1.223 Account:10001 Amount:None Operation:getbalance
+2014-10-13 23:10:50,851 - Server-2 - Account Exists!
+2014-10-13 23:10:50,851 - Server-2 - Received no of messages:2
+2014-10-13 23:10:50,851 - Server-2 - Sent no of messages:2
+2014-10-13 23:10:50,852 - Server-2 - before getbalance operation: Account No:10001 Current Balance:0
+2014-10-13 23:10:50,853 - Server-2 - Account Exists!
+2014-10-13 23:10:50,853 - Server-2 - send reply to client:('nafeess-MacBook-Air.local', 14126)

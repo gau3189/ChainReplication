@@ -1,0 +1,90 @@
+Oct 13, 2014 8:19:35 PM CRServer main
+INFO: ################################ < Intial Configuration > ###############################
+Oct 13, 2014 8:19:35 PM CRServer main
+CONFIG: master addr = 127.0.0.1
+Oct 13, 2014 8:19:35 PM CRServer main
+CONFIG: master port = 3333
+Oct 13, 2014 8:19:35 PM CRServer main
+CONFIG: My address = 127.0.0.1
+Oct 13, 2014 8:19:35 PM CRServer main
+CONFIG: successor port = 5556
+Oct 13, 2014 8:19:35 PM CRServer main
+CONFIG: server Count = 3
+Oct 13, 2014 8:19:35 PM CRServer main
+CONFIG: server udpPortNo  = 4444
+Oct 13, 2014 8:19:35 PM CRServer main
+CONFIG: server tcpPortNo  = 5555
+Oct 13, 2014 8:19:35 PM CRServer main
+CONFIG: successor address = 127.0.0.1
+Oct 13, 2014 8:19:35 PM CRServer main
+CONFIG: server startup time  = 12
+Oct 13, 2014 8:19:35 PM CRServer main
+CONFIG: server delay time  = 100
+Oct 13, 2014 8:19:35 PM CRServer main
+INFO: ################################ </ Intial Configuration >###############################
+Oct 13, 2014 8:19:35 PM CRServer main
+INFO: Account List at StartUp = {}
+Oct 13, 2014 8:19:35 PM CRClientServerThread run
+INFO: IN CRClientServerThread WAITING FOR CLIENT
+Oct 13, 2014 8:20:55 PM CRClientServerThread run
+INFO: Recieved Request from client = < Operation = WD, reqID = CITI.2.8 , accountNumber= 50 ,amount = 463.0>
+Oct 13, 2014 8:20:55 PM CRClientServerThread processRequest
+INFO: Process Request
+Oct 13, 2014 8:20:55 PM CRClientServerThread withdraw
+INFO: For account Number = 50
+Oct 13, 2014 8:20:55 PM CRClientServerThread withdraw
+INFO: Processed Trans = []
+Oct 13, 2014 8:20:55 PM CRClientServerThread run
+INFO: CRClientServerThread Socket creation
+Oct 13, 2014 8:20:55 PM CRClientServerThread run
+INFO: Sending Update to other server = operation = WD ; reqID = CITI.2.8 ; balance = 0.0 ; outcome = InsufficientFunds
+Oct 13, 2014 8:20:55 PM CRClientServerThread run
+INFO: Recieved Request from client = < Operation = DP, reqID = CITI.1.8 , accountNumber= 57 ,amount = 137.0>
+Oct 13, 2014 8:20:55 PM CRClientServerThread processRequest
+INFO: Process Request
+Oct 13, 2014 8:20:55 PM CRClientServerThread deposit
+INFO: For account Number = 57
+Oct 13, 2014 8:20:55 PM CRClientServerThread deposit
+INFO: Processed Trans = [DP,CITI.1.8,137.0]
+Oct 13, 2014 8:20:55 PM CRClientServerThread run
+INFO: Sending Update to other server = operation = DP ; reqID = CITI.1.8 ; balance = 137.0 ; outcome = Processed
+Oct 13, 2014 8:21:00 PM CRClientServerThread run
+INFO: Recieved Request from client = < Operation = DP, reqID = CITI.2.0 , accountNumber= 45 ,amount = 527.0>
+Oct 13, 2014 8:21:00 PM CRClientServerThread processRequest
+INFO: Process Request
+Oct 13, 2014 8:21:00 PM CRClientServerThread deposit
+INFO: For account Number = 45
+Oct 13, 2014 8:21:00 PM CRClientServerThread deposit
+INFO: Processed Trans = [DP,CITI.2.0,527.0]
+Oct 13, 2014 8:21:00 PM CRClientServerThread run
+INFO: Sending Update to other server = operation = DP ; reqID = CITI.2.0 ; balance = 527.0 ; outcome = Processed
+Oct 13, 2014 8:21:00 PM CRClientServerThread run
+INFO: Recieved Request from client = < Operation = DP, reqID = CITI.1.5 , accountNumber= 56 ,amount = 722.0>
+Oct 13, 2014 8:21:00 PM CRClientServerThread processRequest
+INFO: Process Request
+Oct 13, 2014 8:21:00 PM CRClientServerThread deposit
+INFO: For account Number = 56
+Oct 13, 2014 8:21:00 PM CRClientServerThread deposit
+INFO: Processed Trans = [DP,CITI.1.5,722.0]
+Oct 13, 2014 8:21:00 PM CRClientServerThread run
+INFO: Sending Update to other server = operation = DP ; reqID = CITI.1.5 ; balance = 722.0 ; outcome = Processed
+Oct 13, 2014 8:21:05 PM CRClientServerThread run
+INFO: Recieved Request from client = < Operation = DP, reqID = CITI.2.6 , accountNumber= 48 ,amount = 596.0>
+Oct 13, 2014 8:21:05 PM CRClientServerThread processRequest
+INFO: Process Request
+Oct 13, 2014 8:21:05 PM CRClientServerThread deposit
+INFO: For account Number = 48
+Oct 13, 2014 8:21:05 PM CRClientServerThread deposit
+INFO: Processed Trans = [DP,CITI.2.6,596.0]
+Oct 13, 2014 8:21:05 PM CRClientServerThread run
+INFO: Sending Update to other server = operation = DP ; reqID = CITI.2.6 ; balance = 596.0 ; outcome = Processed
+Oct 13, 2014 8:21:05 PM CRClientServerThread run
+INFO: Recieved Request from client = < Operation = WD, reqID = CITI.1.2 , accountNumber= 30 ,amount = 333.0>
+Oct 13, 2014 8:21:05 PM CRClientServerThread processRequest
+INFO: Process Request
+Oct 13, 2014 8:21:05 PM CRClientServerThread withdraw
+INFO: For account Number = 30
+Oct 13, 2014 8:21:05 PM CRClientServerThread withdraw
+INFO: Processed Trans = []
+Oct 13, 2014 8:21:05 PM CRClientServerThread run
+INFO: Sending Update to other server = operation = WD ; reqID = CITI.1.2 ; balance = 0.0 ; outcome = InsufficientFunds

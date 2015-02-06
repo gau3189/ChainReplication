@@ -1,0 +1,18 @@
+2014-10-13 23:10:50,832 - Client-4 - Client id:14126
+2014-10-13 23:10:50,833 - Client-4 - Generating log file:client_14126_TFCU.log
+2014-10-13 23:10:50,834 - Client-4 - Bank Name:TFCU Reply Wait:0.005 No.Retry:2
+2014-10-13 23:10:50,834 - Client-4 - Request Type:itemized
+2014-10-13 23:10:50,834 - Client-4 - Request Information:getbalance,CITI.1.223,10001
+2014-10-13 23:10:50,835 - Client-4 - Request Information:deposit,CITI.1.223,10001,200
+2014-10-13 23:10:50,836 - Client-4 - Request Information:deposit,CITI.1.445,10002,1000
+2014-10-13 23:10:50,836 - Client-4 - Request Information:withdraw,CITI.1.446,10002,500
+2014-10-13 23:10:50,837 - Client-4 - Request Information:withdraw,CITI.1.447,10002,500
+2014-10-13 23:10:50,837 - Client-4 - Request to Server: Operation:getbalance  account_no:10001  req_id:CITI.1.223  amount:None
+2014-10-13 23:10:50,846 - Client-4 - Oops Timeout.. resending for:ops:getbalance account_no:10001 req_id:CITI.1.223 amount:None
+2014-10-13 23:10:50,849 - Client-4 - Reply from Server :('CITI.1.223', 10001, 'Processed', 0)
+2014-10-13 23:10:50,854 - Client-4 - Oops Timeout.. resending for:ops:getbalance account_no:10001 req_id:CITI.1.223 amount:None
+2014-10-13 23:10:50,859 - Client-4 - Request to Server: Operation:deposit  account_no:10001  req_id:CITI.1.223  amount:200
+2014-10-13 23:10:50,861 - Client-4 - Request to Server: Operation:deposit  account_no:10002  req_id:CITI.1.445  amount:1000
+2014-10-13 23:10:50,862 - Client-4 - Request to Server: Operation:withdraw  account_no:10002  req_id:CITI.1.446  amount:500
+2014-10-13 23:10:50,863 - Client-4 - Request to Server: Operation:withdraw  account_no:10002  req_id:CITI.1.447  amount:500
+2014-10-13 23:10:50,865 - Client-4 - Client Terminating .. all requests served!

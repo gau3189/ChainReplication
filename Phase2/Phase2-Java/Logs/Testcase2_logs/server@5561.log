@@ -1,0 +1,142 @@
+Oct 13, 2014 8:55:02 PM CRServer main
+INFO: ################################ < Intial Configuration > ###############################
+Oct 13, 2014 8:55:02 PM CRServer main
+CONFIG: master addr = 127.0.0.1
+Oct 13, 2014 8:55:02 PM CRServer main
+CONFIG: master port = 6666
+Oct 13, 2014 8:55:02 PM CRServer main
+CONFIG: My address = 127.0.0.1
+Oct 13, 2014 8:55:02 PM CRServer main
+CONFIG: successor port = 5562
+Oct 13, 2014 8:55:02 PM CRServer main
+CONFIG: server Count = 4
+Oct 13, 2014 8:55:02 PM CRServer main
+CONFIG: server udpPortNo  = 4450
+Oct 13, 2014 8:55:03 PM CRServer main
+CONFIG: server tcpPortNo  = 5561
+Oct 13, 2014 8:55:03 PM CRServer main
+CONFIG: successor address = 127.0.0.1
+Oct 13, 2014 8:55:03 PM CRServer main
+CONFIG: server startup time  = 12
+Oct 13, 2014 8:55:03 PM CRServer main
+CONFIG: server delay time  = 6
+Oct 13, 2014 8:55:03 PM CRServer main
+INFO: ################################ </ Intial Configuration >###############################
+Oct 13, 2014 8:55:03 PM CRServer main
+INFO: Account List at StartUp = {}
+Oct 13, 2014 8:55:03 PM CRClientServerThread run
+INFO: IN CRClientServerThread WAITING FOR CLIENT
+Oct 13, 2014 8:55:14 PM CRServer main
+FINE: Created TCP port for lsitening peer server port no = 5561
+Oct 13, 2014 8:55:14 PM CRServer main
+FINE: Received from predecessor = operation = DP ; reqID = HDFC.4.1 ; balance = 300.0 ; outcome = Processed
+Oct 13, 2014 8:55:14 PM CRServer update
+FINE: In Update
+Oct 13, 2014 8:55:14 PM CRServer deposit
+FINE: In Deposit
+Oct 13, 2014 8:55:14 PM CRServer deposit
+INFO: For account Number = 10003
+Oct 13, 2014 8:55:14 PM CRServer deposit
+INFO: Processed Trans = [DP,HDFC.4.1,300.0]
+Oct 13, 2014 8:55:14 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 8:55:14 PM CRServer main
+FINE: Socket creation
+Oct 13, 2014 8:55:14 PM CRServer main
+FINE: Sending to successor server =  operation = DP ; reqID = HDFC.4.1 ; balance = 300.0 ; outcome = Processed at port =   5562
+Oct 13, 2014 8:55:14 PM CRServer main
+FINE: Received from predecessor = operation = DP ; reqID = HDFC.2.1 ; balance = 600.0 ; outcome = Processed
+Oct 13, 2014 8:55:14 PM CRServer update
+FINE: In Update
+Oct 13, 2014 8:55:14 PM CRServer deposit
+FINE: In Deposit
+Oct 13, 2014 8:55:14 PM CRServer deposit
+INFO: For account Number = 10003
+Oct 13, 2014 8:55:14 PM CRServer deposit
+INFO: Processed Trans = [DP,HDFC.4.1,300.0, DP,HDFC.2.1,300.0]
+Oct 13, 2014 8:55:14 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 8:55:14 PM CRServer main
+FINE: Sending to successor server =  operation = DP ; reqID = HDFC.2.1 ; balance = 600.0 ; outcome = Processed at port =   5562
+Oct 13, 2014 8:55:24 PM CRServer main
+FINE: Received from predecessor = operation = DP ; reqID = HDFC.3.1 ; balance = 600.0 ; outcome = Processed
+Oct 13, 2014 8:55:24 PM CRServer update
+FINE: In Update
+Oct 13, 2014 8:55:24 PM CRServer deposit
+FINE: In Deposit
+Oct 13, 2014 8:55:24 PM CRServer deposit
+INFO: For account Number = 10001
+Oct 13, 2014 8:55:24 PM CRServer deposit
+INFO: Processed Trans = [DP,HDFC.3.1,600.0]
+Oct 13, 2014 8:55:24 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 8:55:24 PM CRServer main
+FINE: Sending to successor server =  operation = DP ; reqID = HDFC.3.1 ; balance = 600.0 ; outcome = Processed at port =   5562
+Oct 13, 2014 8:55:24 PM CRServer main
+FINE: Received from predecessor = operation = DP ; reqID = HDFC.1.1 ; balance = 1200.0 ; outcome = Processed
+Oct 13, 2014 8:55:24 PM CRServer update
+FINE: In Update
+Oct 13, 2014 8:55:24 PM CRServer deposit
+FINE: In Deposit
+Oct 13, 2014 8:55:24 PM CRServer deposit
+INFO: For account Number = 10001
+Oct 13, 2014 8:55:24 PM CRServer deposit
+INFO: Processed Trans = [DP,HDFC.3.1,600.0, DP,HDFC.1.1,600.0]
+Oct 13, 2014 8:55:24 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 8:55:24 PM CRServer main
+FINE: Sending to successor server =  operation = DP ; reqID = HDFC.1.1 ; balance = 1200.0 ; outcome = Processed at port =   5562
+Oct 13, 2014 8:55:24 PM CRServer main
+FINE: Received from predecessor = operation = DP ; reqID = HDFC.4.1 ; balance = 600.0 ; outcome = Processed
+Oct 13, 2014 8:55:24 PM CRServer update
+FINE: In Update
+Oct 13, 2014 8:55:24 PM CRServer deposit
+FINE: In Deposit
+Oct 13, 2014 8:55:24 PM CRServer deposit
+INFO: For account Number = 10004
+Oct 13, 2014 8:55:24 PM CRServer deposit
+INFO: Processed Trans = [DP,HDFC.4.1,600.0]
+Oct 13, 2014 8:55:24 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 8:55:24 PM CRServer main
+FINE: Sending to successor server =  operation = DP ; reqID = HDFC.4.1 ; balance = 600.0 ; outcome = Processed at port =   5562
+Oct 13, 2014 8:55:24 PM CRServer main
+FINE: Received from predecessor = operation = DP ; reqID = HDFC.2.1 ; balance = 1200.0 ; outcome = Processed
+Oct 13, 2014 8:55:24 PM CRServer update
+FINE: In Update
+Oct 13, 2014 8:55:24 PM CRServer deposit
+FINE: In Deposit
+Oct 13, 2014 8:55:24 PM CRServer deposit
+INFO: For account Number = 10004
+Oct 13, 2014 8:55:24 PM CRServer deposit
+INFO: Processed Trans = [DP,HDFC.4.1,600.0, DP,HDFC.2.1,600.0]
+Oct 13, 2014 8:55:24 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 8:55:24 PM CRServer main
+FINE: Sending to successor server =  operation = DP ; reqID = HDFC.2.1 ; balance = 1200.0 ; outcome = Processed at port =   5562
+Oct 13, 2014 8:55:34 PM CRServer main
+FINE: Received from predecessor = operation = WD ; reqID = HDFC.3.2 ; balance = 0.0 ; outcome = InsufficientFunds
+Oct 13, 2014 8:55:34 PM CRServer update
+FINE: In Update
+Oct 13, 2014 8:55:34 PM CRServer withdraw
+INFO: For account Number = 10002
+Oct 13, 2014 8:55:34 PM CRServer withdraw
+INFO: Processed Trans = [DP,HDFC.3.2,200.0]
+Oct 13, 2014 8:55:34 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 8:55:34 PM CRServer main
+FINE: Sending to successor server =  operation = WD ; reqID = HDFC.3.2 ; balance = 0.0 ; outcome = InsufficientFunds at port =   5562
+Oct 13, 2014 8:55:34 PM CRServer main
+FINE: Received from predecessor = operation = WD ; reqID = HDFC.1.2 ; balance = 0.0 ; outcome = InsufficientFunds
+Oct 13, 2014 8:55:34 PM CRServer update
+FINE: In Update
+Oct 13, 2014 8:55:34 PM CRServer withdraw
+INFO: For account Number = 10002
+Oct 13, 2014 8:55:34 PM CRServer withdraw
+INFO: Processed Trans = [DP,HDFC.3.2,200.0]
+Oct 13, 2014 8:55:34 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 8:55:34 PM CRServer main
+FINE: Sending to successor server =  operation = WD ; reqID = HDFC.1.2 ; balance = 0.0 ; outcome = InsufficientFunds at port =   5562
+Oct 13, 2014 8:56:17 PM CRServer main
+SEVERE: Exception Occured java.io.EOFException

@@ -1,0 +1,23 @@
+2014-10-13 23:45:12,837 - Server-1 - Server Id:15109
+2014-10-13 23:45:12,844 - Server-1 - Belongs to:TFCU
+2014-10-13 23:45:12,846 - Server-1 - Predecessor id:('nafeess-MacBook-Air.local', 16154)
+2014-10-13 23:45:12,847 - Server-1 - Sucessor id:('nafeess-MacBook-Air.local', 28029)
+2014-10-13 23:45:12,848 - Server-1 - Life Time: Terminates after 3 send messages
+2014-10-13 23:45:12,871 - Server-1 - Request received from its predecessor:('nafeess-MacBook-Air.local', 16154)
+2014-10-13 23:45:12,871 - Server-1 - Req id :CITI.1.223
+2014-10-13 23:45:12,872 - Server-1 - Account Not Exists!
+2014-10-13 23:45:12,872 - Server-1 - Creating Account!
+2014-10-13 23:45:12,873 - Server-1 - Received no of messages:1
+2014-10-13 23:45:12,873 - Server-1 - Sent no of messages:1
+2014-10-13 23:45:12,874 - Server-1 - Operation is valid so update its internal data structures
+2014-10-13 23:45:12,874 - Server-1 - After updating: Account No:10001 Current Balance:200
+2014-10-13 23:45:12,874 - Server-1 - Status of operation  15109:('valid', ('CITI.1.223', 10001, 'Processed', 200), 200, ('CITI.1.223', 'D', 200))
+2014-10-13 23:45:12,875 - Server-1 - Forward request to its successor:('nafeess-MacBook-Air.local', 28029)
+2014-10-13 23:45:12,878 - Server-1 - Request received from its predecessor:('nafeess-MacBook-Air.local', 16154)
+2014-10-13 23:45:12,878 - Server-1 - Req id :CITI.1.223
+2014-10-13 23:45:12,879 - Server-1 - Account Exists!
+2014-10-13 23:45:12,879 - Server-1 - Received no of messages:2
+2014-10-13 23:45:12,880 - Server-1 - Sent no of messages:2
+2014-10-13 23:45:12,880 - Server-1 - Operation is invalid ! Just pass on request ..
+2014-10-13 23:45:12,881 - Server-1 - Status of operation  15109:('duplicate', ('CITI.1.223', 10001, 'Processed', 200))
+2014-10-13 23:45:12,882 - Server-1 - Forward request to its successor:('nafeess-MacBook-Air.local', 28029)

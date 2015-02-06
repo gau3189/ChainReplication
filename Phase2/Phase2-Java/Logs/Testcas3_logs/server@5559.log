@@ -1,0 +1,90 @@
+Oct 13, 2014 9:06:29 PM CRServer main
+INFO: ################################ < Intial Configuration > ###############################
+Oct 13, 2014 9:06:29 PM CRServer main
+CONFIG: master addr = 127.0.0.1
+Oct 13, 2014 9:06:29 PM CRServer main
+CONFIG: master port = 6666
+Oct 13, 2014 9:06:29 PM CRServer main
+CONFIG: My address = 127.0.0.1
+Oct 13, 2014 9:06:29 PM CRServer main
+CONFIG: successor port = 5560
+Oct 13, 2014 9:06:29 PM CRServer main
+CONFIG: server Count = 4
+Oct 13, 2014 9:06:29 PM CRServer main
+CONFIG: server udpPortNo  = 4448
+Oct 13, 2014 9:06:29 PM CRServer main
+CONFIG: server tcpPortNo  = 5559
+Oct 13, 2014 9:06:29 PM CRServer main
+CONFIG: successor address = 127.0.0.1
+Oct 13, 2014 9:06:29 PM CRServer main
+CONFIG: server startup time  = 12
+Oct 13, 2014 9:06:29 PM CRServer main
+CONFIG: server delay time  = 6
+Oct 13, 2014 9:06:29 PM CRServer main
+INFO: ################################ </ Intial Configuration >###############################
+Oct 13, 2014 9:06:29 PM CRServer main
+INFO: Account List at StartUp = {}
+Oct 13, 2014 9:06:29 PM CRClientServerThread run
+INFO: IN CRClientServerThread WAITING FOR CLIENT
+Oct 13, 2014 9:07:07 PM CRClientServerThread run
+INFO: Recieved Request from client = < Operation = WD, reqID = HDFC.4.1 , accountNumber= 10003 ,amount = 300.0>
+Oct 13, 2014 9:07:07 PM CRClientServerThread processRequest
+INFO: Process Request
+Oct 13, 2014 9:07:07 PM CRClientServerThread withdraw
+INFO: For account Number = 10003
+Oct 13, 2014 9:07:07 PM CRClientServerThread withdraw
+INFO: Processed Trans = []
+Oct 13, 2014 9:07:07 PM CRClientServerThread run
+INFO: CRClientServerThread Socket creation
+Oct 13, 2014 9:07:07 PM CRClientServerThread run
+INFO: Sending Update to other server = operation = WD ; reqID = HDFC.4.1 ; balance = 0.0 ; outcome = InsufficientFunds
+Oct 13, 2014 9:07:07 PM CRClientServerThread run
+INFO: Recieved Request from client = < Operation = WD, reqID = HDFC.2.1 , accountNumber= 10004 ,amount = 600.0>
+Oct 13, 2014 9:07:07 PM CRClientServerThread processRequest
+INFO: Process Request
+Oct 13, 2014 9:07:07 PM CRClientServerThread withdraw
+INFO: For account Number = 10004
+Oct 13, 2014 9:07:07 PM CRClientServerThread withdraw
+INFO: Processed Trans = []
+Oct 13, 2014 9:07:07 PM CRClientServerThread run
+INFO: Sending Update to other server = operation = WD ; reqID = HDFC.2.1 ; balance = 0.0 ; outcome = InsufficientFunds
+Oct 13, 2014 9:07:17 PM CRClientServerThread run
+INFO: Recieved Request from client = < Operation = DP, reqID = HDFC.3.1 , accountNumber= 10001 ,amount = 600.0>
+Oct 13, 2014 9:07:17 PM CRClientServerThread processRequest
+INFO: Process Request
+Oct 13, 2014 9:07:17 PM CRClientServerThread deposit
+INFO: For account Number = 10001
+Oct 13, 2014 9:07:17 PM CRClientServerThread deposit
+INFO: Processed Trans = [DP,HDFC.3.1,600.0]
+Oct 13, 2014 9:07:17 PM CRClientServerThread run
+INFO: Sending Update to other server = operation = DP ; reqID = HDFC.3.1 ; balance = 600.0 ; outcome = Processed
+Oct 13, 2014 9:07:17 PM CRClientServerThread run
+INFO: Recieved Request from client = < Operation = DP, reqID = HDFC.1.1 , accountNumber= 10001 ,amount = 600.0>
+Oct 13, 2014 9:07:17 PM CRClientServerThread processRequest
+INFO: Process Request
+Oct 13, 2014 9:07:17 PM CRClientServerThread deposit
+INFO: For account Number = 10001
+Oct 13, 2014 9:07:17 PM CRClientServerThread deposit
+INFO: Processed Trans = [DP,HDFC.3.1,600.0, DP,HDFC.1.1,600.0]
+Oct 13, 2014 9:07:17 PM CRClientServerThread run
+INFO: Sending Update to other server = operation = DP ; reqID = HDFC.1.1 ; balance = 1200.0 ; outcome = Processed
+Oct 13, 2014 9:07:27 PM CRClientServerThread run
+INFO: Recieved Request from client = < Operation = WD, reqID = HDFC.3.2 , accountNumber= 10001 ,amount = 601.0>
+Oct 13, 2014 9:07:27 PM CRClientServerThread processRequest
+INFO: Process Request
+Oct 13, 2014 9:07:27 PM CRClientServerThread withdraw
+INFO: For account Number = 10001
+Oct 13, 2014 9:07:27 PM CRClientServerThread withdraw
+INFO: Processed Trans = [DP,HDFC.3.1,600.0, DP,HDFC.1.1,600.0, WD,HDFC.3.2,601.0]
+Oct 13, 2014 9:07:27 PM CRClientServerThread run
+INFO: Sending Update to other server = operation = WD ; reqID = HDFC.3.2 ; balance = 599.0 ; outcome = Processed
+Oct 13, 2014 9:07:27 PM CRClientServerThread run
+INFO: Recieved Request from client = < Operation = WD, reqID = HDFC.1.2 , accountNumber= 10002 ,amount = 800.0>
+Oct 13, 2014 9:07:27 PM CRClientServerThread processRequest
+INFO: Process Request
+Oct 13, 2014 9:07:27 PM CRClientServerThread withdraw
+INFO: For account Number = 10002
+Oct 13, 2014 9:07:27 PM CRClientServerThread withdraw
+INFO: Processed Trans = []
+Oct 13, 2014 9:07:27 PM CRClientServerThread run
+INFO: Sending Update to other server = operation = WD ; reqID = HDFC.1.2 ; balance = 0.0 ; outcome = InsufficientFunds

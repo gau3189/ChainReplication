@@ -1,0 +1,64 @@
+Oct 13, 2014 8:20:55 PM CRClient main
+INFO: ################################ < Intial Configuration > ###############################
+Oct 13, 2014 8:20:55 PM CRClient main
+CONFIG: master addr = 127.0.0.1
+Oct 13, 2014 8:20:55 PM CRClient main
+CONFIG: master port = 6665
+Oct 13, 2014 8:20:55 PM CRClient main
+CONFIG: head address = 127.0.0.1
+Oct 13, 2014 8:20:55 PM CRClient main
+CONFIG: head port = 4444
+Oct 13, 2014 8:20:55 PM CRClient main
+CONFIG: tail address = 127.0.0.1
+Oct 13, 2014 8:20:55 PM CRClient main
+CONFIG: tail port = 4446
+Oct 13, 2014 8:20:55 PM CRClient main
+CONFIG: client Count = 2
+Oct 13, 2014 8:20:55 PM CRClient main
+CONFIG: client Wait Time  = 5000
+Oct 13, 2014 8:20:55 PM CRClient main
+CONFIG: client Resends   = 2
+Oct 13, 2014 8:20:55 PM CRClient main
+CONFIG: client requests  = {REQUEST_INFO=[10, 3, 0.2, 0.5, 0.3, 0.0]}
+Oct 13, 2014 8:20:55 PM CRClient main
+INFO: ################################ </ Intial Configuration >###############################
+Oct 13, 2014 8:20:55 PM ClientThread run
+CONFIG: Client ID :: 1 UDP Socket PortNo ::  27375
+Oct 13, 2014 8:20:55 PM ClientThread run
+CONFIG: Client ID :: 2 UDP Socket PortNo ::  37540
+Oct 13, 2014 8:20:55 PM ClientThread run
+INFO: seed = 10
+Oct 13, 2014 8:20:55 PM ClientThread run
+INFO: seed = 10
+Oct 13, 2014 8:20:55 PM ClientThread run
+INFO: numMessages = 3
+Oct 13, 2014 8:20:55 PM ClientThread run
+INFO: numMessages = 3
+Oct 13, 2014 8:20:55 PM ClientThread sendMessage
+INFO: CLIENT ID :: 2 Sending Request to server = < Operation = WD, reqID = CITI.2.8 , accountNumber= 50 ,amount = 463.0> at 4444
+Oct 13, 2014 8:20:55 PM ClientThread sendMessage
+INFO: CLIENT ID :: 1 Sending Request to server = < Operation = DP, reqID = CITI.1.8 , accountNumber= 57 ,amount = 137.0> at 4444
+Oct 13, 2014 8:20:55 PM ClientThread sendMessage
+INFO: CLIENT ID :: 2 received message =  <operation = WD, outcome = InsufficientFunds, reqID = CITI.2.8, balance = 0.0, accountNumber = 50>
+Oct 13, 2014 8:20:55 PM ClientThread sendMessage
+INFO: CLIENT ID :: 1 received message =  <operation = DP, outcome = Processed, reqID = CITI.1.8, balance = 137.0, accountNumber = 57>
+Oct 13, 2014 8:21:00 PM ClientThread sendMessage
+INFO: CLIENT ID :: 2 Sending Request to server = < Operation = DP, reqID = CITI.2.0 , accountNumber= 45 ,amount = 527.0> at 4444
+Oct 13, 2014 8:21:00 PM ClientThread sendMessage
+INFO: CLIENT ID :: 1 Sending Request to server = < Operation = DP, reqID = CITI.1.5 , accountNumber= 56 ,amount = 722.0> at 4444
+Oct 13, 2014 8:21:00 PM ClientThread sendMessage
+INFO: CLIENT ID :: 2 received message =  <operation = DP, outcome = Processed, reqID = CITI.2.0, balance = 527.0, accountNumber = 45>
+Oct 13, 2014 8:21:00 PM ClientThread sendMessage
+INFO: CLIENT ID :: 1 received message =  <operation = DP, outcome = Processed, reqID = CITI.1.5, balance = 722.0, accountNumber = 56>
+Oct 13, 2014 8:21:05 PM ClientThread sendMessage
+INFO: CLIENT ID :: 2 Sending Request to server = < Operation = DP, reqID = CITI.2.6 , accountNumber= 48 ,amount = 596.0> at 4444
+Oct 13, 2014 8:21:05 PM ClientThread sendMessage
+INFO: CLIENT ID :: 1 Sending Request to server = < Operation = WD, reqID = CITI.1.2 , accountNumber= 30 ,amount = 333.0> at 4444
+Oct 13, 2014 8:21:05 PM ClientThread sendMessage
+INFO: CLIENT ID :: 2 received message =  <operation = DP, outcome = Processed, reqID = CITI.2.6, balance = 596.0, accountNumber = 48>
+Oct 13, 2014 8:21:05 PM ClientThread sendMessage
+INFO: CLIENT ID :: 1 received message =  <operation = WD, outcome = InsufficientFunds, reqID = CITI.1.2, balance = 0.0, accountNumber = 30>
+Oct 13, 2014 8:21:10 PM ClientThread run
+INFO: Done With all messages
+Oct 13, 2014 8:21:10 PM ClientThread run
+INFO: Done With all messages

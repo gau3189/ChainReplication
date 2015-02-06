@@ -1,0 +1,31 @@
+2014-10-13 23:45:12,836 - Server-2 - Server Id:28029
+2014-10-13 23:45:12,839 - Server-2 - Belongs to:TFCU
+2014-10-13 23:45:12,845 - Server-2 - Predecessor id:('nafeess-MacBook-Air.local', 15109)
+2014-10-13 23:45:12,847 - Server-2 - Sucessor id:None
+2014-10-13 23:45:12,848 - Server-2 - I am the Tail !!
+2014-10-13 23:45:12,848 - Server-2 - Life Time: Terminates after 3 send messages
+2014-10-13 23:45:12,859 - Server-2 - Req_id:CITI.1.223 Account:10001 Amount:None Operation:getbalance
+2014-10-13 23:45:12,859 - Server-2 - Account Not Exists!
+2014-10-13 23:45:12,860 - Server-2 - Creating Account!
+2014-10-13 23:45:12,860 - Server-2 - Received no of messages:1
+2014-10-13 23:45:12,860 - Server-2 - Sent no of messages:1
+2014-10-13 23:45:12,861 - Server-2 - before getbalance operation: Account No:10001 Current Balance:0
+2014-10-13 23:45:12,861 - Server-2 - Account Exists!
+2014-10-13 23:45:12,861 - Server-2 - send reply to client:('nafeess-MacBook-Air.local', 20406)
+2014-10-13 23:45:12,877 - Server-2 - Request received from its predecessor:('nafeess-MacBook-Air.local', 15109)
+2014-10-13 23:45:12,878 - Server-2 - Req id :CITI.1.223
+2014-10-13 23:45:12,878 - Server-2 - Account Exists!
+2014-10-13 23:45:12,879 - Server-2 - Received no of messages:2
+2014-10-13 23:45:12,879 - Server-2 - Sent no of messages:2
+2014-10-13 23:45:12,880 - Server-2 - Operation is valid so update its internal data structures
+2014-10-13 23:45:12,880 - Server-2 - After updating: Account No:10001 Current Balance:200
+2014-10-13 23:45:12,880 - Server-2 - Status of operation  28029:('valid', ('CITI.1.223', 10001, 'Processed', 200), 200, ('CITI.1.223', 'D', 200))
+2014-10-13 23:45:12,882 - Server-2 - send reply to client:('nafeess-MacBook-Air.local', 20406)
+2014-10-13 23:45:12,884 - Server-2 - Request received from its predecessor:('nafeess-MacBook-Air.local', 15109)
+2014-10-13 23:45:12,886 - Server-2 - Req id :CITI.1.223
+2014-10-13 23:45:12,887 - Server-2 - Account Exists!
+2014-10-13 23:45:12,888 - Server-2 - Received no of messages:3
+2014-10-13 23:45:12,889 - Server-2 - Sent no of messages:3
+2014-10-13 23:45:12,889 - Server-2 - Operation is invalid ! Just pass on request ..
+2014-10-13 23:45:12,889 - Server-2 - Status of operation  28029:('duplicate', ('CITI.1.223', 10001, 'Processed', 200))
+2014-10-13 23:45:12,890 - Server-2 - send reply to client:('nafeess-MacBook-Air.local', 20406)

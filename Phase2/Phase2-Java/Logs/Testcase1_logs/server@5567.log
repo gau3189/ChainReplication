@@ -1,0 +1,254 @@
+Oct 13, 2014 8:31:26 PM CRServer main
+INFO: ################################ < Intial Configuration > ###############################
+Oct 13, 2014 8:31:26 PM CRServer main
+CONFIG: master addr = 127.0.0.1
+Oct 13, 2014 8:31:26 PM CRServer main
+CONFIG: master port = 3333
+Oct 13, 2014 8:31:26 PM CRServer main
+CONFIG: My address = 127.0.0.1
+Oct 13, 2014 8:31:26 PM CRServer main
+CONFIG: successor port = 0
+Oct 13, 2014 8:31:26 PM CRServer main
+CONFIG: server Count = 4
+Oct 13, 2014 8:31:26 PM CRServer main
+CONFIG: server udpPortNo  = 4457
+Oct 13, 2014 8:31:26 PM CRServer main
+CONFIG: server tcpPortNo  = 5567
+Oct 13, 2014 8:31:26 PM CRServer main
+CONFIG: successor address = null
+Oct 13, 2014 8:31:26 PM CRServer main
+CONFIG: server startup time  = 12
+Oct 13, 2014 8:31:26 PM CRServer main
+CONFIG: server delay time  = 6
+Oct 13, 2014 8:31:26 PM CRServer main
+INFO: ################################ </ Intial Configuration >###############################
+Oct 13, 2014 8:31:26 PM CRServer main
+INFO: Account List at StartUp = {}
+Oct 13, 2014 8:31:26 PM CRClientServerThread run
+INFO: IN CRClientServerThread WAITING FOR CLIENT
+Oct 13, 2014 8:32:01 PM CRServer main
+FINE: Created TCP port for lsitening peer server port no = 5567
+Oct 13, 2014 8:32:01 PM CRServer main
+FINE: Received from predecessor = operation = DP ; reqID = CHASE.1.9 ; balance = 654.0 ; outcome = Processed
+Oct 13, 2014 8:32:01 PM CRServer update
+FINE: In Update
+Oct 13, 2014 8:32:01 PM CRServer deposit
+FINE: In Deposit
+Oct 13, 2014 8:32:01 PM CRServer deposit
+INFO: For account Number = 33
+Oct 13, 2014 8:32:01 PM CRServer deposit
+INFO: Processed Trans = [DP,CHASE.1.9,654.0]
+Oct 13, 2014 8:32:01 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 8:32:01 PM CRServer main
+FINE: Sending Response to client =  <operation = DP, outcome = Processed, reqID = CHASE.1.9, balance = 654.0, accountNumber = 33>
+Oct 13, 2014 8:32:01 PM CRServer main
+FINE: Received from predecessor = operation = DP ; reqID = CHASE.2.3 ; balance = 171.0 ; outcome = Processed
+Oct 13, 2014 8:32:01 PM CRServer update
+FINE: In Update
+Oct 13, 2014 8:32:01 PM CRServer deposit
+FINE: In Deposit
+Oct 13, 2014 8:32:01 PM CRServer deposit
+INFO: For account Number = 16
+Oct 13, 2014 8:32:01 PM CRServer deposit
+INFO: Processed Trans = [DP,CHASE.2.3,171.0]
+Oct 13, 2014 8:32:01 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 8:32:01 PM CRServer main
+FINE: Sending Response to client =  <operation = DP, outcome = Processed, reqID = CHASE.2.3, balance = 171.0, accountNumber = 16>
+Oct 13, 2014 8:32:11 PM CRClientServerThread run
+INFO: Recieved Request from client = < Operation = GB, reqID = CHASE.2.6 , accountNumber= 31 ,amount = 0.0>
+Oct 13, 2014 8:32:11 PM CRClientServerThread processRequest
+INFO: Process Request
+Oct 13, 2014 8:32:11 PM CRClientServerThread run
+INFO: Sending Response to client = operation = GB ; reqID = CHASE.2.6 ; balance = 0.0 ; outcome = Processed
+Oct 13, 2014 8:32:11 PM CRServer main
+FINE: Received from predecessor = operation = WD ; reqID = CHASE.1.5 ; balance = 0.0 ; outcome = InsufficientFunds
+Oct 13, 2014 8:32:11 PM CRServer update
+FINE: In Update
+Oct 13, 2014 8:32:11 PM CRServer withdraw
+INFO: For account Number = 51
+Oct 13, 2014 8:32:11 PM CRServer withdraw
+INFO: Processed Trans = [DP,CHASE.1.5,518.0]
+Oct 13, 2014 8:32:11 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 8:32:11 PM CRServer main
+FINE: Sending Response to client =  <operation = WD, outcome = InsufficientFunds, reqID = CHASE.1.5, balance = 0.0, accountNumber = 51>
+Oct 13, 2014 8:32:21 PM CRClientServerThread run
+INFO: Recieved Request from client = < Operation = GB, reqID = CHASE.2.4 , accountNumber= 34 ,amount = 0.0>
+Oct 13, 2014 8:32:21 PM CRClientServerThread processRequest
+INFO: Process Request
+Oct 13, 2014 8:32:21 PM CRClientServerThread run
+INFO: Sending Response to client = operation = GB ; reqID = CHASE.2.4 ; balance = 0.0 ; outcome = Processed
+Oct 13, 2014 8:32:21 PM CRServer main
+FINE: Received from predecessor = operation = DP ; reqID = CHASE.1.2 ; balance = 203.0 ; outcome = Processed
+Oct 13, 2014 8:32:21 PM CRServer update
+FINE: In Update
+Oct 13, 2014 8:32:21 PM CRServer deposit
+FINE: In Deposit
+Oct 13, 2014 8:32:21 PM CRServer deposit
+INFO: For account Number = 47
+Oct 13, 2014 8:32:21 PM CRServer deposit
+INFO: Processed Trans = [DP,CHASE.1.2,203.0]
+Oct 13, 2014 8:32:21 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 8:32:21 PM CRServer main
+FINE: Sending Response to client =  <operation = DP, outcome = Processed, reqID = CHASE.1.2, balance = 203.0, accountNumber = 47>
+Oct 13, 2014 8:32:31 PM CRServer main
+FINE: Received from predecessor = operation = WD ; reqID = CHASE.2.1 ; balance = 0.0 ; outcome = InsufficientFunds
+Oct 13, 2014 8:32:31 PM CRServer update
+FINE: In Update
+Oct 13, 2014 8:32:31 PM CRServer withdraw
+INFO: For account Number = 43
+Oct 13, 2014 8:32:31 PM CRServer withdraw
+INFO: Processed Trans = [DP,CHASE.2.1,177.0]
+Oct 13, 2014 8:32:31 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 8:32:31 PM CRServer main
+FINE: Sending Response to client =  <operation = WD, outcome = InsufficientFunds, reqID = CHASE.2.1, balance = 0.0, accountNumber = 43>
+Oct 13, 2014 8:32:31 PM CRServer main
+FINE: Received from predecessor = operation = DP ; reqID = CHASE.1.7 ; balance = 293.0 ; outcome = Processed
+Oct 13, 2014 8:32:31 PM CRServer update
+FINE: In Update
+Oct 13, 2014 8:32:31 PM CRServer deposit
+FINE: In Deposit
+Oct 13, 2014 8:32:31 PM CRServer deposit
+INFO: For account Number = 34
+Oct 13, 2014 8:32:31 PM CRServer deposit
+INFO: Processed Trans = [DP,CHASE.1.7,293.0]
+Oct 13, 2014 8:32:31 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 8:32:31 PM CRServer main
+FINE: Sending Response to client =  <operation = DP, outcome = Processed, reqID = CHASE.1.7, balance = 293.0, accountNumber = 34>
+Oct 13, 2014 8:32:41 PM CRServer main
+FINE: Received from predecessor = operation = WD ; reqID = CHASE.2.1 ; balance = 0.0 ; outcome = InsufficientFunds
+Oct 13, 2014 8:32:41 PM CRServer update
+FINE: In Update
+Oct 13, 2014 8:32:41 PM CRServer withdraw
+INFO: For account Number = 27
+Oct 13, 2014 8:32:41 PM CRServer withdraw
+INFO: Processed Trans = [DP,CHASE.2.1,978.0]
+Oct 13, 2014 8:32:41 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 8:32:41 PM CRServer main
+FINE: Sending Response to client =  <operation = WD, outcome = InsufficientFunds, reqID = CHASE.2.1, balance = 0.0, accountNumber = 27>
+Oct 13, 2014 8:32:41 PM CRClientServerThread run
+INFO: Recieved Request from client = < Operation = GB, reqID = CHASE.1.5 , accountNumber= 10 ,amount = 0.0>
+Oct 13, 2014 8:32:41 PM CRClientServerThread processRequest
+INFO: Process Request
+Oct 13, 2014 8:32:41 PM CRClientServerThread run
+INFO: Sending Response to client = operation = GB ; reqID = CHASE.1.5 ; balance = 0.0 ; outcome = Processed
+Oct 13, 2014 8:32:51 PM CRServer main
+FINE: Received from predecessor = operation = DP ; reqID = CHASE.2.5 ; balance = 511.0 ; outcome = Processed
+Oct 13, 2014 8:32:51 PM CRServer update
+FINE: In Update
+Oct 13, 2014 8:32:51 PM CRServer deposit
+FINE: In Deposit
+Oct 13, 2014 8:32:51 PM CRServer deposit
+INFO: For account Number = 43
+Oct 13, 2014 8:32:51 PM CRServer deposit
+INFO: Processed Trans = [DP,CHASE.2.1,177.0, DP,CHASE.2.5,511.0]
+Oct 13, 2014 8:32:51 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 8:32:51 PM CRServer main
+FINE: Sending Response to client =  <operation = DP, outcome = Processed, reqID = CHASE.2.5, balance = 511.0, accountNumber = 43>
+Oct 13, 2014 8:32:51 PM CRServer main
+FINE: Received from predecessor = operation = DP ; reqID = CHASE.1.4 ; balance = 224.0 ; outcome = Processed
+Oct 13, 2014 8:32:51 PM CRServer update
+FINE: In Update
+Oct 13, 2014 8:32:51 PM CRServer deposit
+FINE: In Deposit
+Oct 13, 2014 8:32:51 PM CRServer deposit
+INFO: For account Number = 52
+Oct 13, 2014 8:32:51 PM CRServer deposit
+INFO: Processed Trans = [DP,CHASE.1.4,224.0]
+Oct 13, 2014 8:32:51 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 8:32:51 PM CRServer main
+FINE: Sending Response to client =  <operation = DP, outcome = Processed, reqID = CHASE.1.4, balance = 224.0, accountNumber = 52>
+Oct 13, 2014 8:33:01 PM CRServer main
+FINE: Received from predecessor = operation = WD ; reqID = CHASE.2.3 ; balance = 0.0 ; outcome = InsufficientFunds
+Oct 13, 2014 8:33:01 PM CRServer update
+FINE: In Update
+Oct 13, 2014 8:33:01 PM CRServer withdraw
+INFO: For account Number = 27
+Oct 13, 2014 8:33:01 PM CRServer withdraw
+INFO: Processed Trans = [DP,CHASE.2.1,978.0]
+Oct 13, 2014 8:33:01 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 8:33:01 PM CRServer main
+FINE: Sending Response to client =  <operation = WD, outcome = InsufficientFunds, reqID = CHASE.2.3, balance = 0.0, accountNumber = 27>
+Oct 13, 2014 8:33:01 PM CRClientServerThread run
+INFO: Recieved Request from client = < Operation = GB, reqID = CHASE.1.6 , accountNumber= 49 ,amount = 0.0>
+Oct 13, 2014 8:33:01 PM CRClientServerThread processRequest
+INFO: Process Request
+Oct 13, 2014 8:33:01 PM CRClientServerThread run
+INFO: Sending Response to client = operation = GB ; reqID = CHASE.1.6 ; balance = 0.0 ; outcome = Processed
+Oct 13, 2014 8:33:11 PM CRClientServerThread run
+INFO: Recieved Request from client = < Operation = GB, reqID = CHASE.2.3 , accountNumber= 39 ,amount = 0.0>
+Oct 13, 2014 8:33:11 PM CRClientServerThread processRequest
+INFO: Process Request
+Oct 13, 2014 8:33:11 PM CRClientServerThread run
+INFO: Sending Response to client = operation = GB ; reqID = CHASE.2.3 ; balance = 0.0 ; outcome = Processed
+Oct 13, 2014 8:33:11 PM CRServer main
+FINE: Received from predecessor = operation = DP ; reqID = CHASE.1.4 ; balance = 569.0 ; outcome = Processed
+Oct 13, 2014 8:33:11 PM CRServer update
+FINE: In Update
+Oct 13, 2014 8:33:11 PM CRServer deposit
+FINE: In Deposit
+Oct 13, 2014 8:33:11 PM CRServer deposit
+INFO: For account Number = 27
+Oct 13, 2014 8:33:11 PM CRServer deposit
+INFO: Processed Trans = [DP,CHASE.2.1,978.0, DP,CHASE.1.4,569.0]
+Oct 13, 2014 8:33:11 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 8:33:11 PM CRServer main
+FINE: Sending Response to client =  <operation = DP, outcome = Processed, reqID = CHASE.1.4, balance = 569.0, accountNumber = 27>
+Oct 13, 2014 8:33:21 PM CRServer main
+FINE: Received from predecessor = operation = DP ; reqID = CHASE.2.3 ; balance = 921.0 ; outcome = Processed
+Oct 13, 2014 8:33:21 PM CRServer update
+FINE: In Update
+Oct 13, 2014 8:33:21 PM CRServer deposit
+FINE: In Deposit
+Oct 13, 2014 8:33:21 PM CRServer deposit
+INFO: For account Number = 29
+Oct 13, 2014 8:33:21 PM CRServer deposit
+INFO: Processed Trans = [DP,CHASE.2.3,921.0]
+Oct 13, 2014 8:33:21 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 8:33:21 PM CRServer main
+FINE: Sending Response to client =  <operation = DP, outcome = Processed, reqID = CHASE.2.3, balance = 921.0, accountNumber = 29>
+Oct 13, 2014 8:33:21 PM CRServer main
+FINE: Received from predecessor = operation = WD ; reqID = CHASE.1.4 ; balance = 0.0 ; outcome = InsufficientFunds
+Oct 13, 2014 8:33:21 PM CRServer update
+FINE: In Update
+Oct 13, 2014 8:33:21 PM CRServer withdraw
+INFO: For account Number = 24
+Oct 13, 2014 8:33:21 PM CRServer withdraw
+INFO: Processed Trans = [DP,CHASE.1.4,221.0]
+Oct 13, 2014 8:33:21 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 8:33:21 PM CRServer main
+FINE: Sending Response to client =  <operation = WD, outcome = InsufficientFunds, reqID = CHASE.1.4, balance = 0.0, accountNumber = 24>
+Oct 13, 2014 8:33:31 PM CRServer main
+FINE: Received from predecessor = operation = DP ; reqID = CHASE.2.0 ; balance = 923.0 ; outcome = Processed
+Oct 13, 2014 8:33:31 PM CRServer update
+FINE: In Update
+Oct 13, 2014 8:33:31 PM CRServer deposit
+FINE: In Deposit
+Oct 13, 2014 8:33:31 PM CRServer deposit
+INFO: For account Number = 29
+Oct 13, 2014 8:33:31 PM CRServer deposit
+INFO: Processed Trans = [DP,CHASE.2.3,921.0, DP,CHASE.2.0,2.0]
+Oct 13, 2014 8:33:31 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 8:33:31 PM CRServer main
+FINE: Sending Response to client =  <operation = DP, outcome = Processed, reqID = CHASE.2.0, balance = 923.0, accountNumber = 29>
+Oct 13, 2014 8:33:31 PM CRClientServerThread run
+INFO: Recieved Request from client = < Operation = GB, reqID = CHASE.1.2 , accountNumber= 40 ,amount = 0.0>
+Oct 13, 2014 8:33:31 PM CRClientServerThread processRequest
+INFO: Process Request
+Oct 13, 2014 8:33:31 PM CRClientServerThread run
+INFO: Sending Response to client = operation = GB ; reqID = CHASE.1.2 ; balance = 0.0 ; outcome = Processed
+Oct 13, 2014 8:36:06 PM CRServer main
+SEVERE: Exception Occured java.io.EOFException

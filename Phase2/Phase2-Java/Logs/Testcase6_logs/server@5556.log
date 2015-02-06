@@ -1,0 +1,190 @@
+Oct 13, 2014 11:15:27 PM CRServer main
+INFO: ################################ < Intial Configuration > ###############################
+Oct 13, 2014 11:15:27 PM CRServer main
+CONFIG: master addr = 127.0.0.1
+Oct 13, 2014 11:15:27 PM CRServer main
+CONFIG: master port = 6666
+Oct 13, 2014 11:15:27 PM CRServer main
+CONFIG: My address = 127.0.0.1
+Oct 13, 2014 11:15:27 PM CRServer main
+CONFIG: successor port = 5557
+Oct 13, 2014 11:15:27 PM CRServer main
+CONFIG: server Count = 3
+Oct 13, 2014 11:15:27 PM CRServer main
+CONFIG: server udpPortNo  = 4445
+Oct 13, 2014 11:15:27 PM CRServer main
+CONFIG: server tcpPortNo  = 5556
+Oct 13, 2014 11:15:27 PM CRServer main
+CONFIG: successor address = 127.0.0.1
+Oct 13, 2014 11:15:27 PM CRServer main
+CONFIG: server startup time  = 12
+Oct 13, 2014 11:15:27 PM CRServer main
+CONFIG: server delay time  = 6000
+Oct 13, 2014 11:15:27 PM CRServer main
+INFO: ################################ </ Intial Configuration >###############################
+Oct 13, 2014 11:15:27 PM CRServer main
+INFO: Account List at StartUp = {}
+Oct 13, 2014 11:15:27 PM CRClientServerThread run
+INFO: IN CRClientServerThread WAITING FOR CLIENT
+Oct 13, 2014 11:15:31 PM CRServer main
+FINE: Created TCP port for lsitening peer server port no = 5556
+Oct 13, 2014 11:15:31 PM CRServer main
+FINE: Received from predecessor = operation = DP ; reqID = CITI.2.1 ; balance = 600.0 ; outcome = Processed
+Oct 13, 2014 11:15:31 PM CRServer update
+FINE: In Update
+Oct 13, 2014 11:15:31 PM CRServer deposit
+FINE: In Deposit
+Oct 13, 2014 11:15:31 PM CRServer deposit
+INFO: For account Number = 10003
+Oct 13, 2014 11:15:31 PM CRServer deposit
+INFO: Processed Trans = [DP,CITI.2.1,600.0]
+Oct 13, 2014 11:15:31 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 11:15:31 PM CRServer main
+FINE: Socket creation
+Oct 13, 2014 11:15:32 PM CRServer main
+FINE: Sending to successor server =  operation = DP ; reqID = CITI.2.1 ; balance = 600.0 ; outcome = Processed at port =   5557
+Oct 13, 2014 11:15:32 PM CRServer main
+FINE: Received from predecessor = operation = DP ; reqID = CITI.1.1 ; balance = 600.0 ; outcome = Processed
+Oct 13, 2014 11:15:32 PM CRServer update
+FINE: In Update
+Oct 13, 2014 11:15:32 PM CRServer deposit
+FINE: In Deposit
+Oct 13, 2014 11:15:32 PM CRServer deposit
+INFO: For account Number = 10001
+Oct 13, 2014 11:15:32 PM CRServer deposit
+INFO: Processed Trans = [DP,CITI.1.1,600.0]
+Oct 13, 2014 11:15:32 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 11:15:32 PM CRServer main
+FINE: Sending to successor server =  operation = DP ; reqID = CITI.1.1 ; balance = 600.0 ; outcome = Processed at port =   5557
+Oct 13, 2014 11:15:36 PM CRServer main
+FINE: Received from predecessor = operation = DP ; reqID = CITI.2.1 ; balance = 600.0 ; outcome = Processed
+Oct 13, 2014 11:15:36 PM CRServer update
+FINE: In Update
+Oct 13, 2014 11:15:36 PM CRServer deposit
+FINE: In Deposit
+Oct 13, 2014 11:15:36 PM CRServer deposit
+INFO: For account Number = 10003
+Oct 13, 2014 11:15:36 PM CRServer deposit
+INFO: Processed Trans = [DP,CITI.2.1,600.0, DP,CITI.2.1,600.0]
+Oct 13, 2014 11:15:36 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 11:15:36 PM CRServer main
+FINE: Sending to successor server =  operation = DP ; reqID = CITI.2.1 ; balance = 600.0 ; outcome = Processed at port =   5557
+Oct 13, 2014 11:15:36 PM CRServer main
+FINE: Received from predecessor = operation = DP ; reqID = CITI.1.1 ; balance = 600.0 ; outcome = Processed
+Oct 13, 2014 11:15:36 PM CRServer update
+FINE: In Update
+Oct 13, 2014 11:15:36 PM CRServer deposit
+FINE: In Deposit
+Oct 13, 2014 11:15:36 PM CRServer deposit
+INFO: For account Number = 10001
+Oct 13, 2014 11:15:36 PM CRServer deposit
+INFO: Processed Trans = [DP,CITI.1.1,600.0, DP,CITI.1.1,600.0]
+Oct 13, 2014 11:15:36 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 11:15:36 PM CRServer main
+FINE: Sending to successor server =  operation = DP ; reqID = CITI.1.1 ; balance = 600.0 ; outcome = Processed at port =   5557
+Oct 13, 2014 11:15:41 PM CRServer main
+FINE: Received from predecessor = operation = DP ; reqID = CITI.1.1 ; balance = 600.0 ; outcome = Processed
+Oct 13, 2014 11:15:41 PM CRServer update
+FINE: In Update
+Oct 13, 2014 11:15:41 PM CRServer deposit
+FINE: In Deposit
+Oct 13, 2014 11:15:41 PM CRServer deposit
+INFO: For account Number = 10001
+Oct 13, 2014 11:15:41 PM CRServer deposit
+INFO: Processed Trans = [DP,CITI.1.1,600.0, DP,CITI.1.1,600.0, DP,CITI.1.1,600.0]
+Oct 13, 2014 11:15:41 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 11:15:41 PM CRServer main
+FINE: Sending to successor server =  operation = DP ; reqID = CITI.1.1 ; balance = 600.0 ; outcome = Processed at port =   5557
+Oct 13, 2014 11:15:43 PM CRServer main
+FINE: Received from predecessor = operation = WD ; reqID = CITI.2.2 ; balance = 400.0 ; outcome = Processed
+Oct 13, 2014 11:15:43 PM CRServer update
+FINE: In Update
+Oct 13, 2014 11:15:43 PM CRServer withdraw
+INFO: For account Number = 10003
+Oct 13, 2014 11:15:43 PM CRServer withdraw
+INFO: Processed Trans = [DP,CITI.2.1,600.0, DP,CITI.2.1,600.0, DP,CITI.2.2,200.0]
+Oct 13, 2014 11:15:43 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 11:15:43 PM CRServer main
+FINE: Sending to successor server =  operation = WD ; reqID = CITI.2.2 ; balance = 400.0 ; outcome = Processed at port =   5557
+Oct 13, 2014 11:15:48 PM CRServer main
+FINE: Received from predecessor = operation = WD ; reqID = CITI.2.2 ; balance = 400.0 ; outcome = Processed
+Oct 13, 2014 11:15:48 PM CRServer update
+FINE: In Update
+Oct 13, 2014 11:15:48 PM CRServer withdraw
+INFO: For account Number = 10003
+Oct 13, 2014 11:15:48 PM CRServer withdraw
+INFO: Processed Trans = [DP,CITI.2.1,600.0, DP,CITI.2.1,600.0, DP,CITI.2.2,200.0, DP,CITI.2.2,200.0]
+Oct 13, 2014 11:15:48 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 11:15:48 PM CRServer main
+FINE: Sending to successor server =  operation = WD ; reqID = CITI.2.2 ; balance = 400.0 ; outcome = Processed at port =   5557
+Oct 13, 2014 11:15:49 PM CRServer main
+FINE: Received from predecessor = operation = DP ; reqID = CITI.1.2 ; balance = 1200.0 ; outcome = Processed
+Oct 13, 2014 11:15:49 PM CRServer update
+FINE: In Update
+Oct 13, 2014 11:15:49 PM CRServer deposit
+FINE: In Deposit
+Oct 13, 2014 11:15:49 PM CRServer deposit
+INFO: For account Number = 10001
+Oct 13, 2014 11:15:49 PM CRServer deposit
+INFO: Processed Trans = [DP,CITI.1.1,600.0, DP,CITI.1.1,600.0, DP,CITI.1.1,600.0, DP,CITI.1.2,600.0]
+Oct 13, 2014 11:15:49 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 11:15:49 PM CRServer main
+FINE: Sending to successor server =  operation = DP ; reqID = CITI.1.2 ; balance = 1200.0 ; outcome = Processed at port =   5557
+Oct 13, 2014 11:15:54 PM CRServer main
+FINE: Received from predecessor = operation = DP ; reqID = CITI.1.2 ; balance = 1200.0 ; outcome = Processed
+Oct 13, 2014 11:15:54 PM CRServer update
+FINE: In Update
+Oct 13, 2014 11:15:54 PM CRServer deposit
+FINE: In Deposit
+Oct 13, 2014 11:15:54 PM CRServer deposit
+INFO: For account Number = 10001
+Oct 13, 2014 11:15:54 PM CRServer deposit
+INFO: Processed Trans = [DP,CITI.1.1,600.0, DP,CITI.1.1,600.0, DP,CITI.1.1,600.0, DP,CITI.1.2,600.0, DP,CITI.1.2,600.0]
+Oct 13, 2014 11:15:54 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 11:15:54 PM CRServer main
+FINE: Sending to successor server =  operation = DP ; reqID = CITI.1.2 ; balance = 1200.0 ; outcome = Processed at port =   5557
+Oct 13, 2014 11:15:55 PM CRServer main
+FINE: Received from predecessor = operation = WD ; reqID = CITI.2.2 ; balance = 400.0 ; outcome = Processed
+Oct 13, 2014 11:15:55 PM CRServer update
+FINE: In Update
+Oct 13, 2014 11:15:55 PM CRServer withdraw
+INFO: For account Number = 10003
+Oct 13, 2014 11:15:55 PM CRServer withdraw
+INFO: Processed Trans = [DP,CITI.2.1,600.0, DP,CITI.2.1,600.0, DP,CITI.2.2,200.0, DP,CITI.2.2,200.0, DP,CITI.2.2,200.0]
+Oct 13, 2014 11:15:55 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 11:15:55 PM CRServer main
+FINE: Sending to successor server =  operation = WD ; reqID = CITI.2.2 ; balance = 400.0 ; outcome = Processed at port =   5557
+Oct 13, 2014 11:16:00 PM CRServer main
+FINE: Received from predecessor = operation = WD ; reqID = CITI.2.2 ; balance = 400.0 ; outcome = Processed
+Oct 13, 2014 11:16:00 PM CRServer update
+FINE: In Update
+Oct 13, 2014 11:16:00 PM CRServer withdraw
+INFO: For account Number = 10003
+Oct 13, 2014 11:16:00 PM CRServer withdraw
+INFO: Processed Trans = [DP,CITI.2.1,600.0, DP,CITI.2.1,600.0, DP,CITI.2.2,200.0, DP,CITI.2.2,200.0, DP,CITI.2.2,200.0, DP,CITI.2.2,200.0]
+Oct 13, 2014 11:16:00 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 11:16:00 PM CRServer main
+FINE: Sending to successor server =  operation = WD ; reqID = CITI.2.2 ; balance = 400.0 ; outcome = Processed at port =   5557
+Oct 13, 2014 11:16:05 PM CRServer main
+FINE: Received from predecessor = operation = WD ; reqID = CITI.2.2 ; balance = 400.0 ; outcome = Processed
+Oct 13, 2014 11:16:05 PM CRServer update
+FINE: In Update
+Oct 13, 2014 11:16:05 PM CRServer withdraw
+INFO: For account Number = 10003
+Oct 13, 2014 11:16:05 PM CRServer withdraw
+INFO: Processed Trans = [DP,CITI.2.1,600.0, DP,CITI.2.1,600.0, DP,CITI.2.2,200.0, DP,CITI.2.2,200.0, DP,CITI.2.2,200.0, DP,CITI.2.2,200.0, DP,CITI.2.2,200.0]
+Oct 13, 2014 11:16:05 PM CRServer update
+FINE: Update Finished
+Oct 13, 2014 11:16:05 PM CRServer main
+FINE: Sending to successor server =  operation = WD ; reqID = CITI.2.2 ; balance = 400.0 ; outcome = Processed at port =   5557

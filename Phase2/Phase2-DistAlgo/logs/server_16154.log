@@ -1,0 +1,21 @@
+2014-10-13 23:45:12,835 - Server-3 - Server Id:16154
+2014-10-13 23:45:12,837 - Server-3 - Belongs to:TFCU
+2014-10-13 23:45:12,844 - Server-3 - Predecessor id:None
+2014-10-13 23:45:12,847 - Server-3 - Sucessor id:('nafeess-MacBook-Air.local', 15109)
+2014-10-13 23:45:12,847 - Server-3 - I am the Head !!
+2014-10-13 23:45:12,848 - Server-3 - Life Time: Terminates after 3 send messages
+2014-10-13 23:45:12,866 - Server-3 - Req_id:CITI.1.223 Account:10001 Amount:200 Operation:deposit
+2014-10-13 23:45:12,866 - Server-3 - Account Not Exists!
+2014-10-13 23:45:12,867 - Server-3 - Creating Account!
+2014-10-13 23:45:12,867 - Server-3 - Received no of messages:1
+2014-10-13 23:45:12,867 - Server-3 - Sent no of messages:1
+2014-10-13 23:45:12,868 - Server-3 - before deposit operation: Account No:10001 Current Balance:0
+2014-10-13 23:45:12,868 - Server-3 - Status of operation:('valid', ('CITI.1.223', 10001, 'Processed', 200), 200, ('CITI.1.223', 'D', 200))
+2014-10-13 23:45:12,869 - Server-3 - Forward request to its successor:('nafeess-MacBook-Air.local', 15109)
+2014-10-13 23:45:12,873 - Server-3 - Req_id:CITI.1.223 Account:10001 Amount:200 Operation:deposit
+2014-10-13 23:45:12,873 - Server-3 - Account Exists!
+2014-10-13 23:45:12,874 - Server-3 - Received no of messages:2
+2014-10-13 23:45:12,874 - Server-3 - Sent no of messages:2
+2014-10-13 23:45:12,874 - Server-3 - before deposit operation: Account No:10001 Current Balance:200
+2014-10-13 23:45:12,875 - Server-3 - Status of operation:('duplicate', ('CITI.1.223', 10001, 'Processed', 200))
+2014-10-13 23:45:12,876 - Server-3 - Forward request to its successor:('nafeess-MacBook-Air.local', 15109)
