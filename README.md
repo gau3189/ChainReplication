@@ -3,6 +3,7 @@ ChainReplication
 PROGRAMMING LANGUAGE :  JAVA (1.7.0_67)
 
 CLIENT-SIDE FILES:
+
 	1. CRClient.java
 
 		Reads the configuration file for the specific bank and gets all the required information for client
@@ -17,6 +18,7 @@ CLIENT-SIDE FILES:
 		this class for each client.
 
 SERVER-SIDE FILES:
+
 	1. CRServer.java
 		
 		Reads the configuration file for the specific bank and gets all the required information for server
